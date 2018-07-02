@@ -1,0 +1,73 @@
+
+.left{
+    background-color: aqua;
+    width: 295px;
+}
+
+/*Header*/
+.leftHeader li{
+    float: left;
+}
+
+.leftHeader a{
+    display: inline-block;
+    height: 30px;
+    padding: 0 45px; 
+}
+
+.leftHeader{
+    height: 60px;
+    background-color: antiquewhite;
+    line-height: 60px;
+}
+
+/*Content*/
+.leftContent{
+    background-color: aquamarine;
+    height:670px;
+}
+
+.panel{
+    height: 610px;
+}
+
+.new{
+    height:60px;
+    line-height: 60px;
+    background-color: white;
+}
+
+.newButton{
+    font-size: 15px;
+    padding: 8px 30px;
+    margin-left: 18px;
+    border-radius: 10px;
+    color: white;
+    background-color: cornflowerblue
+}
+
+.base {
+    height: 305px;
+    overflow: scroll;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.layout {
+    height: 305px;
+    overflow: scroll;
+}
+
+.panelbox {
+    width: 98px;
+    height: 98px;
+    background-color: #c7ddef;
+}
+
+
+
+
+
+
+

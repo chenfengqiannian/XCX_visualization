@@ -1,0 +1,64 @@
+
+.right{
+    width: 985px;
+}
+
+
+/*Header*/
+.rightHeader li{
+    float: left;
+}
+.rightHeader a{
+    display: inline-block;
+    height: 30px;
+    padding: 0 30px; 
+}
+
+
+.rightHeader{
+    padding-right: 30px;
+    height: 60px;
+    background-color: antiquewhite;
+    line-height: 60px;
+}
+
+.leftArea{
+    margin-left:100px;
+}
+
+.pre{
+    font-size: 15px;
+    padding: 5px 15px;
+    border-radius: 10px;
+    margin-right: 10px;
+}
+.psButton{
+    color: cornflowerblue;
+    border: solid 1px cornflowerblue;
+}
+.pdButton{
+    color: white;
+    background-color: cornflowerblue;
+}
+
+/*Content*/
+.rightContent{
+    background-color: orange;
+    height: 590px;
+    padding-top: 80px;
+}
+
+.view {
+    width: 320px;
+    height: 520px;
+    background-color: white;
+    margin-left: 150px;
+}
+
+
+
+
+
+
+
+

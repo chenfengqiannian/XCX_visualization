@@ -1,0 +1,46 @@
+html,body{
+    font-size: 15px;
+    width: 1280px;
+}
+
+body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{
+    margin: 0px;
+    padding: 0px;
+}
+
+img{border: none;}
+
+input,select,textarea{
+    outline: none;
+    border: none;
+    background: none;
+}
+
+textarea{resize: none;}
+
+a{
+    text-decoration: none;
+}
+
+li{
+    list-style: none;
+}
+
+.fl{
+    float: left;
+}
+
+.fr{
+    float: right;
+}
+
+.visible{
+    display: block;
+}
+
+.hide{
+    display: none;
+}
+
+
+
