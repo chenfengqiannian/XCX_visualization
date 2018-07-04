@@ -13,9 +13,9 @@
         <div class="panel">
           <div v-if="tabActive">
             <div v-for="group in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
-              <div>[[group.id]]--[[group.text]]</div>
+              <div>{{group.id}}--{{group.text}}</div>
               <div v-for="page in group.pageItems" v-if="page.id > -1">
-                [[page.id]]--[[page.text]]
+                {{page.id}}--{{page.text}}
               </div>
             </div>
           </div>
@@ -24,7 +24,7 @@
               <!--   base  -->
               <draggable v-model="panelItems" :options="panelOption">
                 <div v-for="item in panelItems" class="panelbox">
-                  [[item.name]]
+                  {{item.name}}
                 </div>
               </draggable>
             </div>
@@ -85,33 +85,91 @@
 </template>
 
 <script>
+  import axios from 'axios'
+  import draggable from 'vuedraggable'
+  var  myComponentIns = {
+
+    data: {
+        item: {}
+    },
+
+    props: ['viewitem'],
+
+
+    //render
+    render: function (createElement) {
+
+        //analyze string and insert the data to check the property change
+        this.item = JSON.parse(this.viewitem);
+
+
+        return createElement('p', this.viewitem)
+    }
+}
   export default {
     name: 'HelloWorld',
     data() {
       return {
-        msg: 'Welcome to Your Vue.js App'
+        tabActive: true,
+        groupItems: [],
+        viewItems: [],
+        panelItems:[],
+        msg: 'Welcome to Your Vue.js App',
+        viewOption: {
+          group: {
+            name: 'pv',
+            pull: false,
+            put: true,
+          },
+          animation: 150,
+        },
       }
+
+    },
+    components: {
+      draggable,
+       'my-component': myComponentIns
     }
+    ,
+    mounted: function () {
+      this.getInitData();
+    },
+    methods:
+      {
+        pageManage() {
+
+        },
+        package() {
+        }
+        ,
+        chooseGroup(id) {
+        }
+        ,
+        createPage(id) {
+        }
+        ,
+        createGroup(id) {
+        }
+        ,
+        getInitData() {
+          let self = this;  //呵呵
+          axios.get('http://0.0.0.0:8000/api/visualizationcode/')
+            .then(function (response) {
+              //处理response json
+              self.panelItems = response.data;
+              console.log(self.panelItems);
+            })
+            .catch(function (error) {
+              console.log(error);
+            });
+        }
+      }
   }
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-  h1, h2 {
-    font-weight: normal;
-  }
-
-  ul {
-    list-style-type: none;
-    padding: 0;
-  }
-
-  li {
-    display: inline-block;
-    margin: 0 10px;
-  }
-
-  a {
-    color: #42b983;
-  }
+  @import "../../static/visualization/css/visualLeft.css";
+  @import "../../static/visualization/css/visualRight.css";
+  @import "../../static/visualization/css/common.css";
 </style>
