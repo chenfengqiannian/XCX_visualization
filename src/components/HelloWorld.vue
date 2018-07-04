@@ -22,9 +22,9 @@
           <div v-else>
             <div class="base">
               <!--   base  -->
-              <draggable v-model="panelItems" :options="panelOption">
+              <draggable :options="panelOption">
                 <div v-for="item in panelItems" class="panelbox">
-                  {{item.name}}
+
                 </div>
               </draggable>
             </div>
@@ -74,7 +74,7 @@
       <div class="rightContent">
 
         <!--320x520-->
-        <draggable class="view" v-model="viewItems" :options="viewOption">
+        <draggable class="view" :options="viewOption">
           <my-component v-for="item in viewItems" v-bind:viewitem="item.code"></my-component>
         </draggable>
       </div>
@@ -87,10 +87,11 @@
 <script>
   import axios from 'axios'
   import draggable from 'vuedraggable'
-  var  myComponentIns = {
+
+  let myComponentIns = {
 
     data: {
-        item: {}
+      item: {}
     },
 
     props: ['viewitem'],
@@ -99,22 +100,34 @@
     //render
     render: function (createElement) {
 
-        //analyze string and insert the data to check the property change
-        this.item = JSON.parse(this.viewitem);
+      //analyze string and insert the data to check the property change
+      this.item = JSON.parse(this.viewitem);
 
 
-        return createElement('p', this.viewitem)
+      return createElement('p', this.viewitem)
     }
-}
+  }
   export default {
     name: 'HelloWorld',
     data() {
       return {
         tabActive: true,
+        groupId: -1,
+        atGroupId: 0,
         groupItems: [],
+
+        //drag panel to view
         viewItems: [],
-        panelItems:[],
-        msg: 'Welcome to Your Vue.js App',
+        panelItems: [],
+        panelOption: {
+          group: {
+            name: 'pv',
+            pull: 'clone',
+            put: false,
+          },
+          sort: false,
+          animation: 150,
+        },
         viewOption: {
           group: {
             name: 'pv',
@@ -128,7 +141,7 @@
     },
     components: {
       draggable,
-       'my-component': myComponentIns
+      'my-component': myComponentIns
     }
     ,
     mounted: function () {
@@ -136,23 +149,38 @@
     },
     methods:
       {
-        pageManage() {
 
+        pageManage() {
+          this.tabActive = true
         },
         package() {
+          this.tabActive = false
         }
         ,
-        chooseGroup(id) {
+        chooseGroup(chooseId) {
+          this.atGroupId = chooseId
         }
         ,
-        createPage(id) {
+        createPage() {
+          if (this.groupId > -1) {
+            this.groupItems[this.atGroupId].pageItems.push({
+              id: 0,
+              text: '未命名页面'
+            })
+          }
         }
         ,
-        createGroup(id) {
+        createGroup() {
+          this.groupId++;
+          this.groupItems.push({
+            id: this.groupId,
+            text: '未命名组',
+            pageItems: []
+          })
         }
         ,
         getInitData() {
-          let self = this;  //呵呵
+          var self = this;  //呵呵
           axios.get('http://0.0.0.0:8000/api/visualizationcode/')
             .then(function (response) {
               //处理response json
