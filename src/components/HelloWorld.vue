@@ -100,11 +100,28 @@
     //render
     render: function (createElement) {
 
-      //analyze string and insert the data to check the property change
-      this.item = JSON.parse(this.viewitem);
+
+      //.....'this' isn't the Vue object......how to get the data from the Vue Object ???
+      let item = JSON.parse(this.viewitem);
+      console.log(item)
 
 
-      return createElement('p', this.viewitem)
+      //insert desc and delete the desc of json
+      let changeStyle = item.attrs.style;
+      let descList = item.attrs.desc;
+      let childList = item.attrs.child;
+      let domProp = item.attrs.domProps;
+
+
+      let temp = {};
+      temp.style = changeStyle;
+      temp.domProps = domProp;
+
+      console.log(temp);
+      console.log(this.$store.state.viewItems);
+
+      //this child should be the template from CreateElement function
+      return createElement(item.htmlTag, temp, childList)
     }
   }
   export default {
