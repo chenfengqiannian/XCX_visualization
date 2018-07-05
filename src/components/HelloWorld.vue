@@ -87,7 +87,6 @@
 <script>
   import axios from 'axios'
   import draggable from 'vuedraggable'
-
   let myComponentIns = {
 
     data: {
@@ -99,7 +98,7 @@
 
     //render
     render: function (createElement) {
-
+      console.log("=====================")
 
       //.....'this' isn't the Vue object......how to get the data from the Vue Object ???
       let item = JSON.parse(this.viewitem);
@@ -124,6 +123,17 @@
       return createElement(item.htmlTag, temp, childList)
     }
   }
+  const store = new Vuex.Store({
+  state: {
+    count: 0
+  },
+  mutations: {
+    increment (state) {
+      state.count++
+    }
+  }
+})
+
   export default {
     name: 'HelloWorld',
     data() {
@@ -163,6 +173,7 @@
     ,
     mounted: function () {
       this.getInitData();
+      console.log(store.state.count)
     },
     methods:
       {
@@ -202,6 +213,7 @@
             .then(function (response) {
               //处理response json
               self.panelItems = response.data;
+              self.viewItems=response.data;
               console.log(self.panelItems);
             })
             .catch(function (error) {
