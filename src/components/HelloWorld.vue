@@ -25,6 +25,8 @@
               <draggable :options="panelOption">
                 <div v-for="item in panelItems" class="panelbox">
 
+                  <img v-bind:src="item.images" class="panel-img"/>
+                    <div class="panelbox-text">{{item.name}}</div>
                 </div>
               </draggable>
             </div>
@@ -87,6 +89,7 @@
 <script>
   import axios from 'axios'
   import draggable from 'vuedraggable'
+  import API from '../../libs/api'
   let myComponentIns = {
 
     data: {
@@ -117,22 +120,13 @@
       temp.domProps = domProp;
 
       console.log(temp);
-      console.log(this.$store.state.viewItems);
+      // console.log(this.$store.state.viewItems);
 
       //this child should be the template from CreateElement function
       return createElement(item.htmlTag, temp, childList)
     }
   }
-  const store = new Vuex.Store({
-  state: {
-    count: 0
-  },
-  mutations: {
-    increment (state) {
-      state.count++
-    }
-  }
-})
+
 
   export default {
     name: 'HelloWorld',
@@ -173,7 +167,6 @@
     ,
     mounted: function () {
       this.getInitData();
-      console.log(store.state.count)
     },
     methods:
       {
@@ -209,11 +202,11 @@
         ,
         getInitData() {
           var self = this;  //呵呵
-          axios.get('http://0.0.0.0:8000/api/visualizationcode/')
+
+          axios.get('http://127.0.0.1:8000/api/visualizationcode/')
             .then(function (response) {
               //处理response json
               self.panelItems = response.data;
-              self.viewItems=response.data;
               console.log(self.panelItems);
             })
             .catch(function (error) {
