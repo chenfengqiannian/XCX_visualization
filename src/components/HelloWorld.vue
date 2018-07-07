@@ -22,7 +22,7 @@
           <div v-else>
             <div class="base">
               <!--   base  -->
-              <draggable :options="panelOption">
+              <draggable v-model="panelItems" :options="panelOption">
                 <div v-for="item in panelItems" class="panelbox">
 
                   <img v-bind:src="item.images" class="panel-img"/>
@@ -76,7 +76,7 @@
       <div class="rightContent">
 
         <!--320x520-->
-        <draggable class="view" :options="viewOption">
+        <draggable class="view" v-model="viewItems" :options="viewOption">
           <my-component v-for="item in viewItems" v-bind:viewitem="item.code"></my-component>
         </draggable>
       </div>
@@ -90,37 +90,39 @@
   import axios from 'axios'
   import draggable from 'vuedraggable'
   import API from '../../libs/api'
+
+
   let myComponentIns = {
 
     data: {
-      item: {}
+      item: {
+
+      }
+
     },
 
     props: ['viewitem'],
 
-
     //render
     render: function (createElement) {
-      console.log("=====================")
+
 
       //.....'this' isn't the Vue object......how to get the data from the Vue Object ???
-      let item = JSON.parse(this.viewitem);
-      console.log(item)
-
+      var item = JSON.parse(this.viewitem);
 
       //insert desc and delete the desc of json
-      let changeStyle = item.attrs.style;
-      let descList = item.attrs.desc;
-      let childList = item.attrs.child;
-      let domProp = item.attrs.domProps;
+      var changeStyle = item.attrs.style;
+      var descList = item.attrs.desc;
+      var childList = item.attrs.child;
+      var domProp = item.attrs.domProps;
 
 
-      let temp = {};
+      var temp = {};
       temp.style = changeStyle;
       temp.domProps = domProp;
 
       console.log(temp);
-      // console.log(this.$store.state.viewItems);
+      //console.log(this.$store.state.viewItems);
 
       //this child should be the template from CreateElement function
       return createElement(item.htmlTag, temp, childList)
