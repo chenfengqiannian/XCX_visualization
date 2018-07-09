@@ -79,8 +79,6 @@
         <draggable class="view" v-model="viewItems" :options="viewOption">
           <my-component v-for="item in viewItems"
                         v-bind:viewitem="item.code"
-                        @click="selected(item)"
-                        class="itemActive"
                         ></my-component>
         </draggable>
       </div>
@@ -107,9 +105,8 @@
     },
     methods:
       {
-        selected(item) {
-          console.log("dsjiadji")
-          this.activeItem = item
+        selected() {
+          alert('hehe');
         }
       },
 
@@ -136,6 +133,9 @@
       let temp = {};
       temp.style = changeStyle;
       temp.domProps = domProp;
+      temp.on = {
+        click:this.selected()
+      }
 
       console.log(temp);
       //console.log(this.$store.state.viewItems);
