@@ -134,7 +134,9 @@
       temp.style = changeStyle;
       temp.domProps = domProp;
       temp.on = {
-        click:this.selected()
+        click:() => {
+          this.selected()
+        }
       }
 
       console.log(temp);
