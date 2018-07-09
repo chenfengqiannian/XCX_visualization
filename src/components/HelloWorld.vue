@@ -80,6 +80,7 @@
           <my-component v-for="item in viewItems"
                         v-bind:viewitem="item.code"
                         @click="selected(item)"
+                        class="itemActive"
                         ></my-component>
         </draggable>
       </div>
