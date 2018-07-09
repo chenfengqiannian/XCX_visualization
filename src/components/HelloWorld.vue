@@ -79,7 +79,8 @@
         <draggable class="view" v-model="viewItems" :options="viewOption">
           <my-component v-for="item in viewItems"
                         v-bind:viewitem="item.code"
-                        ></my-component>
+
+          ></my-component>
         </draggable>
       </div>
     </div>
@@ -92,13 +93,14 @@
   import axios from 'axios'
   import draggable from 'vuedraggable'
   import API from '../../libs/api'
-
+  import {mapActions} from 'vuex'
+  import {mapState} from 'vuex'
 
   let myComponentIns = {
 
     data() {
       return {
-        activeItem:""
+        activeItem: ""
       }
 
 
@@ -106,7 +108,10 @@
     methods:
       {
         selected() {
-          alert('hehe');
+          for (let i of this.$parent.$children) {
+            i.$vnode.componentInstance.$el.className = "";
+          }
+          this.$vnode.componentInstance.$el.className = "itemActive";
         }
       },
 
@@ -134,9 +139,7 @@
       temp.style = changeStyle;
       temp.domProps = domProp;
       temp.on = {
-        click:() => {
-          this.selected()
-        }
+        click: this.selected
       }
 
       console.log(temp);
@@ -186,10 +189,18 @@
     }
     ,
     mounted: function () {
-      this.getInitData();
+      // this.getInitData();
+      let self = this;
+      this.getVisualizationcode().then(() => {
+        self.panelItems = this.visualizationCode;
+        // ...
+      })
     },
     methods:
       {
+        ...mapActions([
+          'getVisualizationcode' // 将 `this.increment()` 映射为 `this.$store.dispatch('increment')`
+        ]),
 
         pageManage() {
           this.tabActive = true
@@ -233,6 +244,10 @@
               console.log(error);
             });
         }
+      },
+    computed:
+      {
+        ...mapState(['visualizationCode'])
       }
   }
 </script>
