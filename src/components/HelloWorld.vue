@@ -26,7 +26,7 @@
                 <div v-for="item in panelItems" class="panelbox">
 
                   <img v-bind:src="item.images" class="panel-img"/>
-                    <div class="panelbox-text">{{item.name}}</div>
+                  <div class="panelbox-text">{{item.name}}</div>
                 </div>
               </draggable>
             </div>
@@ -77,7 +77,10 @@
 
         <!--320x520-->
         <draggable class="view" v-model="viewItems" :options="viewOption">
-          <my-component v-for="item in viewItems" v-bind:viewitem="item.code"></my-component>
+          <my-component v-for="item in viewItems"
+                        v-bind:viewitem="item.code"
+                        @click="selected(item)"
+                        ></my-component>
         </draggable>
       </div>
     </div>
@@ -94,12 +97,20 @@
 
   let myComponentIns = {
 
-    data: {
-      item: {
-
+    data() {
+      return {
+        activeItem:""
       }
 
+
     },
+    methods:
+      {
+        selected(item) {
+          console.log("dsjiadji")
+          this.activeItem = item
+        }
+      },
 
     props: ['viewitem'],
 
@@ -108,16 +119,20 @@
 
 
       //.....'this' isn't the Vue object......how to get the data from the Vue Object ???
-      var item = JSON.parse(this.viewitem);
+      let item = JSON.parse(this.viewitem);
 
       //insert desc and delete the desc of json
-      var changeStyle = item.attrs.style;
-      var descList = item.attrs.desc;
-      var childList = item.attrs.child;
-      var domProp = item.attrs.domProps;
+      let changeStyleList = item.attrs.style;
+      let changeStyle = {};
+      let descList = item.attrs.desc;
+      let childList = item.attrs.child;
+      let domProp = item.attrs.domProps;
 
+      for (let changeStyleItem of changeStyleList) {
+        changeStyle[changeStyleItem.name] = changeStyleItem.value;
+      }
 
-      var temp = {};
+      let temp = {};
       temp.style = changeStyle;
       temp.domProps = domProp;
 
@@ -203,7 +218,7 @@
         }
         ,
         getInitData() {
-          var self = this;  //呵呵
+          let self = this;  //呵呵
 
           axios.get('http://127.0.0.1:8000/api/visualizationcode/')
             .then(function (response) {
