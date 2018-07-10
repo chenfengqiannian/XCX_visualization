@@ -12,7 +12,7 @@
       <div class="leftContent">
         <div class="panel">
           <div v-if="tabActive">
-            <div v-for="group in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
+            <div v-for="group in visualizationCode" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
               <div>{{group.id}}--{{group.text}}</div>
               <div v-for="page in group.pageItems" v-if="page.id > -1">
                 {{page.id}}--{{page.text}}
@@ -92,26 +92,43 @@
 <script>
   import axios from 'axios'
   import draggable from 'vuedraggable'
-  import API from '../../libs/api'
+  import API from '../data/api'
   import {mapActions} from 'vuex'
   import {mapState} from 'vuex'
+  import {mapMutations} from 'vuex'
 
   let myComponentIns = {
 
     data() {
-      return {
-        activeItem: ""
-      }
+      return {}
 
 
     },
-    methods:
+    computed:
       {
+        ...mapState(['activeItem']),
+        activeItemN(){
+          if (this.activeItem===[])
+          {
+            return this.viewitem
+          }
+          else
+          {
+            return this.activeItem
+          }
+        }
+      },
+    methods:
+      {...mapMutations([
+          'SETITEM'
+        ]),
         selected() {
           for (let i of this.$parent.$children) {
             i.$vnode.componentInstance.$el.className = "";
           }
           this.$vnode.componentInstance.$el.className = "itemActive";
+          this.SETITEM(this.viewitem)
+          console.log(this.acticvItem)
         }
       },
 
@@ -122,7 +139,7 @@
 
 
       //.....'this' isn't the Vue object......how to get the data from the Vue Object ???
-      let item = JSON.parse(this.viewitem);
+      let item = JSON.parse(this.activeItemN);
 
       //insert desc and delete the desc of json
       let changeStyleList = item.attrs.style;
@@ -162,7 +179,7 @@
 
         //drag panel to view
         viewItems: [],
-        panelItems: [],
+
         panelOption: {
           group: {
             name: 'pv',
@@ -190,16 +207,15 @@
     ,
     mounted: function () {
       // this.getInitData();
-      let self = this;
-      this.getVisualizationcode().then(() => {
-        self.panelItems = this.visualizationCode;
-        // ...
-      })
+      this.getCode();
+
+
     },
     methods:
       {
+
         ...mapActions([
-          'getVisualizationcode' // 将 `this.increment()` 映射为 `this.$store.dispatch('increment')`
+          'getCode'
         ]),
 
         pageManage() {
@@ -230,24 +246,15 @@
             pageItems: []
           })
         }
-        ,
-        getInitData() {
-          let self = this;  //呵呵
 
-          axios.get('http://127.0.0.1:8000/api/visualizationcode/')
-            .then(function (response) {
-              //处理response json
-              self.panelItems = response.data;
-              console.log(self.panelItems);
-            })
-            .catch(function (error) {
-              console.log(error);
-            });
-        }
+
       },
     computed:
       {
-        ...mapState(['visualizationCode'])
+        ...mapState(['visualizationCode']),
+        panelItems() {
+          return this.visualizationCode
+        }
       }
   }
 </script>
