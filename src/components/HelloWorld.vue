@@ -60,7 +60,7 @@
       <div class="rightHeader">
         <div class="leftArea fl">
           <ul>
-            <li><a href="" class="icon">风格</a></li>
+            <li><a class="icon">风格</a></li>
             <li><a href="" class="icon">管理</a></li>
             <li><a href="" class="icon">帮助</a></li>
             <li><a href="" class="icon">客服</a></li>
@@ -77,11 +77,15 @@
 
         <!--320x520-->
         <draggable class="view" v-model="viewItems" :options="viewOption">
-          <my-component v-for="item in viewItems"
+          <XcxShow v-for="(item, index) in viewItems"
                         v-bind:viewitem="item.code"
+                        v-bind:index="index"
 
-          ></my-component>
+
+          ></XcxShow>
         </draggable>
+
+        <XcxEditor v-bind:avtiveitem="avtiveItem" class="changeItemView" style="display: inline-block;vertical-align: top;"></XcxEditor>
       </div>
     </div>
 
@@ -96,80 +100,11 @@
   import {mapActions} from 'vuex'
   import {mapState} from 'vuex'
   import {mapMutations} from 'vuex'
-
-  let myComponentIns = {
-
-    data() {
-      return {}
-
-
-    },
-    computed:
-      {
-        ...mapState(['activeItem']),
-        activeItemN(){
-          if (this.activeItem===[])
-          {
-            return this.viewitem
-          }
-          else
-          {
-            return this.activeItem
-          }
-        }
-      },
-    methods:
-      {...mapMutations([
-          'SETITEM'
-        ]),
-        selected() {
-          for (let i of this.$parent.$children) {
-            i.$vnode.componentInstance.$el.className = "";
-          }
-          this.$vnode.componentInstance.$el.className = "itemActive";
-          this.SETITEM(this.viewitem)
-          console.log(this.acticvItem)
-        }
-      },
-
-    props: ['viewitem'],
-
-    //render
-    render: function (createElement) {
-
-
-      //.....'this' isn't the Vue object......how to get the data from the Vue Object ???
-      let item = JSON.parse(this.activeItemN);
-
-      //insert desc and delete the desc of json
-      let changeStyleList = item.attrs.style;
-      let changeStyle = {};
-      let descList = item.attrs.desc;
-      let childList = item.attrs.child;
-      let domProp = item.attrs.domProps;
-
-      for (let changeStyleItem of changeStyleList) {
-        changeStyle[changeStyleItem.name] = changeStyleItem.value;
-      }
-
-      let temp = {};
-      temp.style = changeStyle;
-      temp.domProps = domProp;
-      temp.on = {
-        click: this.selected
-      }
-
-      console.log(temp);
-      //console.log(this.$store.state.viewItems);
-
-      //this child should be the template from CreateElement function
-      return createElement(item.htmlTag, temp, childList)
-    }
-  }
+  import XcxShow from '@/components/XcxShow'
+  import XcxEditor from '@/components/XcxEditor'
 
 
   export default {
-    name: 'HelloWorld',
     data() {
       return {
         tabActive: true,
@@ -202,7 +137,8 @@
     },
     components: {
       draggable,
-      'my-component': myComponentIns
+       XcxShow,
+      XcxEditor
     }
     ,
     mounted: function () {
@@ -213,7 +149,9 @@
     },
     methods:
       {
-
+        ...mapMutations([
+          'CODE'
+        ]),
         ...mapActions([
           'getCode'
         ]),
@@ -245,15 +183,28 @@
             text: '未命名组',
             pageItems: []
           })
-        }
+        },
 
 
       },
     computed:
       {
-        ...mapState(['visualizationCode']),
+        ...mapState(['visualizationCode','activeIndex']),
         panelItems() {
           return this.visualizationCode
+        },
+        avtiveItem()
+
+        { console.log(this.activeIndex)
+          console.log(this.viewItems)
+          console.log(this.viewItems[this.activeIndex])
+          return this.viewItems[this.activeIndex]
+        // {console.log(this.activeIndex)
+        //
+        //   if (this.activeIndex)
+        //   return [this.viewItems[0],this.viewItems[1],this.viewItems[2]]
+        //   else
+        //     return {}
         }
       }
   }

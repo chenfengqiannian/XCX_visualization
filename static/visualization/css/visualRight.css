@@ -53,11 +53,10 @@
     height: 520px;
     background-color: white;
     margin-left: 150px;
+  display: inline-block;
 }
 
-.itemActive{
-   border:1px solid aqua;
-}
+
 
 
 

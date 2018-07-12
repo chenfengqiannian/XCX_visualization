@@ -4,7 +4,7 @@ import {API} from '../../data/api'
 
 const state = {
   visualizationCode: [],
-  activeItem: {}
+  activeIndex: undefined,
 }
 
 // getters
@@ -25,6 +25,10 @@ const actions = {
 
 // mutations
 const mutations = {
+  SETINDEX(state,index)
+  {
+    state.activeIndex=index
+  },
   CODE(state, visualizationCode) {
     state.visualizationCode = visualizationCode;
   },
