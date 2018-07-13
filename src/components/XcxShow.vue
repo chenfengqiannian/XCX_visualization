@@ -17,7 +17,7 @@
     computed:
       {
         itemattrs() {
-          let item = JSON.parse(this.viewitem)
+          let item = this.viewitem
           let attrs = {}
           for (let changeStyleItem in item.attrs) {
             if (changeStyleItem === "style" || changeStyleItem === "class")
@@ -27,23 +27,22 @@
           return attrs;
         },
         styleObject() {
-          let item = JSON.parse(this.viewitem)
           let changeStyle = {}
-          for (let changeStyleItem of item.attrs.style) {
+          for (let changeStyleItem of this.viewitem.attrs.style) {
             changeStyle[changeStyleItem.name] = changeStyleItem.value;
           }
           return changeStyle;
         },
         innerHTML() {
-          let item = JSON.parse(this.viewitem)
+          let item = this.viewitem;
           return item["innerHTML"];
         },
         classObject() {
-          let item = JSON.parse(this.viewitem)
+         let item = this.viewitem;
           return item["attrs"]["class"]
         },
         currentComponent() {
-          let item = JSON.parse(this.viewitem)
+          let item = this.viewitem;
           return item["htmlTag"];
         },
 
@@ -55,7 +54,7 @@
     methods:
       {
         ...mapMutations([
-          'SETINDEX'
+          'SETINDEX','SETITEM'
         ]),
         selected() {
           for (let i of this.$parent.$children) {

@@ -1,47 +1,29 @@
 <template>
   <div>
-    <div v-for="item in styleList">
+    <div v-for="(item,index) in styleList">
       <div>{{item.name}}</div>
-      <input v-model="frfr"/>
-      <p>Message is: {{ frfr }}</p>
+      <!--<input v-bind:value="item.value"-->
+             <!--v-on:input="inputChange(item,index,$event)"/>-->
+      <input v-model="item.value"/>
+      <p>Message is: {{ item.value }}</p>
 
     </div>
   </div>
 </template>
 <script>
+  import {mapState} from 'vuex'
   export default {
-    data()
-      {
-        return
-        {
-          frfr:""
-        }
-      }
-    ,
+
     name: "XcxEditor",
     props: ['avtiveitem'],
-    mounted() {
-      this.$watch('frfr',function(newval, val) {
-        console.log(1111)
-      },{deep:true})
-    },
-    // watch:
-    //   {
-    //     styleList: {
-    //       handler(value, oldValue) {
-    //         let copiedValue = Object.assign({}, value)
-    //         console.log(copiedValue)
-    //       },
-    //       deep: true
-    //     }
-    //   },
+
+
+
     computed:
-      {
+      {...mapState(['visualizationCode','itemList']),
         styleList() {
           if (this.avtiveitem) {
-            let cloneitem=Object.assign({}, this.avtiveitem)
-            let item = JSON.parse(cloneitem.code)
-            return item.attrs.style
+            return this.avtiveitem.code.attrs.style
           }
           return []
 

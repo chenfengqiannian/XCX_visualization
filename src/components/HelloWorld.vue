@@ -113,7 +113,8 @@
         groupItems: [],
 
         //drag panel to view
-        viewItems: [],
+        // viewItems: Object.assign({}, this.itemList),
+        viewItems:[],
 
         panelOption: {
           group: {
@@ -150,12 +151,16 @@
     methods:
       {
         ...mapMutations([
-          'CODE'
+          'CODE','SETITEM'
         ]),
         ...mapActions([
           'getCode'
         ]),
+        endMove()
+        { console.log(this.viewItems)
+          this.SETITEM(this.viewItems)
 
+        },
         pageManage() {
           this.tabActive = true
         },
@@ -188,8 +193,8 @@
 
       },
     computed:
-      {
-        ...mapState(['visualizationCode','activeIndex']),
+        {
+        ...mapState(['visualizationCode','activeIndex','itemList']),
         panelItems() {
           return this.visualizationCode
         },
@@ -206,7 +211,19 @@
         //   else
         //     return {}
         }
-      }
+      },
+    watch:
+      {
+        viewItems: {
+      handler (value, oldValue) {
+        let copiedValue = Object.assign({}, value)
+        console.log(copiedValue)
+       this.SETITEM(copiedValue)
+      },
+      deep: true
+    }
+      },
+
   }
 </script>
 

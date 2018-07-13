@@ -5,6 +5,7 @@ import {API} from '../../data/api'
 const state = {
   visualizationCode: [],
   activeIndex: undefined,
+  itemList:[]
 }
 
 // getters
@@ -32,9 +33,9 @@ const mutations = {
   CODE(state, visualizationCode) {
     state.visualizationCode = visualizationCode;
   },
-  SETITEM(state, item) {
+  SETITEM(state, itemList) {
 
-    state.acticvItem=item;
+    state.itemList=itemList;
   }
 }
 
