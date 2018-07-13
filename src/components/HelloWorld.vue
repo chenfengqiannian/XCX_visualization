@@ -12,7 +12,7 @@
       <div class="leftContent">
         <div class="panel">
           <div v-if="tabActive">
-            <div v-for="group in visualizationCode" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
+            <div v-for="group in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
               <div>{{group.id}}--{{group.text}}</div>
               <div v-for="page in group.pageItems" v-if="page.id > -1">
                 {{page.id}}--{{page.text}}
