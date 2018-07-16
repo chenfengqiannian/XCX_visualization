@@ -114,7 +114,7 @@
 
         //drag panel to view
         // viewItems: Object.assign({}, this.itemList),
-        viewItems: [],
+
 
         panelOption: {
           group: {
@@ -124,7 +124,7 @@
           },
           sort: false,
           animation: 150,
-          clone:true
+          clone: true
         },
         viewOption: {
           group: {
@@ -132,7 +132,7 @@
             pull: false,
             put: true,
           },
-          clone:true,
+          clone: true,
           animation: 150,
         },
       }
@@ -193,14 +193,23 @@
 
     computed:
       {
+        viewItems: {
+          get() {return this.itemList
+          },
+          set(val) {
+            let valList = JSON.parse(JSON.stringify(val));
+            this.SETITEM(valList)
+          }
+        },
+
         ...mapState(['visualizationCode', 'activeIndex', 'itemList']),
         panelItems() {
           return this.visualizationCode
         },
         avtiveItem() {
-          console.log(this.activeIndex)
-          console.log(this.viewItems)
-          console.log(this.viewItems[this.activeIndex])
+          // console.log(this.activeIndex)
+          // console.log(this.viewItems)
+          // console.log(this.viewItems[this.activeIndex])
           // Object.assign({}, this.viewItems[this.activeIndex])
           return this.viewItems[this.activeIndex]
           // {console.log(this.activeIndex)
@@ -211,18 +220,7 @@
           //     return {}
         }
       },
-    watch:
-      {
-        viewItems: {
-          handler(value, oldValue) {
-            let copiedValue = Object.assign({}, value)
 
-            console.log(copiedValue)
-            this.SETITEM(copiedValue)
-          },
-          deep: true
-        }
-      },
 
   }
 </script>
