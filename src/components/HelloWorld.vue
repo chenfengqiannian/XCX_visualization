@@ -4,8 +4,8 @@
     <div class="left fl">
       <div class="leftHeader">
         <ul>
-          <li v-bind:class="" v-on:click="pageManage"><a>页面管理</a></li>
-          <li v-bind:class="" v-on:click="package"><a>组件库</a></li>
+          <li v-bind:class="" v-on:click="tabActive=true"><a>页面管理</a></li>
+          <li v-bind:class="" v-on:click="tabActive=false"><a>组件库</a></li>
         </ul>
       </div>
 
@@ -22,9 +22,8 @@
           <div v-else>
             <div class="base">
               <!--   base  -->
-              <draggable v-model="panelItems" :options="panelOption">
+              <draggable v-model="panelItems" :options="panelOption" class="panelFather">
                 <div v-for="item in panelItems" class="panelbox">
-
                   <img v-bind:src="item.images" class="panel-img"/>
                   <div class="panelbox-text">{{item.name}}</div>
                 </div>
@@ -70,7 +69,7 @@
         <div class="rightArea fr">
           <input type="button" value="预览" class="pre psButton" v-on:click=""/>
           <input type="button" value="保存" class="pre psButton" v-on:click=""/>
-          <input type="button" value="生成" class="pre pdButton"/>
+          <input type="button" value="生成" class="pre pdButton" v-on:click=""/>
         </div>
       </div>
       <div class="rightContent">
@@ -78,14 +77,15 @@
         <!--320x520-->
         <draggable class="view" v-model="viewItems" :options="viewOption">
           <XcxShow v-for="(item, index) in viewItems"
-                        v-bind:viewitem="item.code"
-                        v-bind:index="index"
+                   v-bind:viewitem="item.code"
+                   v-bind:index="index"
 
 
           ></XcxShow>
         </draggable>
 
-        <XcxEditor v-bind:avtiveitem="avtiveItem" class="changeItemView" style="display: inline-block;vertical-align: top;"></XcxEditor>
+        <XcxEditor v-bind:avtiveitem="avtiveItem" class="changeItemView"
+                   style="display: inline-block;vertical-align: top;"></XcxEditor>
       </div>
     </div>
 
@@ -114,7 +114,7 @@
 
         //drag panel to view
         // viewItems: Object.assign({}, this.itemList),
-        viewItems:[],
+        viewItems: [],
 
         panelOption: {
           group: {
@@ -124,6 +124,7 @@
           },
           sort: false,
           animation: 150,
+          clone:true
         },
         viewOption: {
           group: {
@@ -131,6 +132,7 @@
             pull: false,
             put: true,
           },
+          clone:true,
           animation: 150,
         },
       }
@@ -138,36 +140,32 @@
     },
     components: {
       draggable,
-       XcxShow,
+      XcxShow,
       XcxEditor
     }
     ,
     mounted: function () {
       // this.getInitData();
       this.getCode();
-
+      this.createGroup()
+      this.createPage();
 
     },
     methods:
       {
         ...mapMutations([
-          'CODE','SETITEM'
+          'CODE', 'SETITEM'
         ]),
         ...mapActions([
           'getCode'
         ]),
-        endMove()
-        { console.log(this.viewItems)
+        endMove() {
+          console.log(this.viewItems)
           this.SETITEM(this.viewItems)
 
         },
-        pageManage() {
-          this.tabActive = true
-        },
-        package() {
-          this.tabActive = false
-        }
-        ,
+
+
         chooseGroup(chooseId) {
           this.atGroupId = chooseId
         }
@@ -176,7 +174,7 @@
           if (this.groupId > -1) {
             this.groupItems[this.atGroupId].pageItems.push({
               id: 0,
-              text: '未命名页面'
+              text: '新页面'
             })
           }
         }
@@ -185,43 +183,45 @@
           this.groupId++;
           this.groupItems.push({
             id: this.groupId,
-            text: '未命名组',
+            text: '新组',
             pageItems: []
           })
         },
 
 
       },
+
     computed:
-        {
-        ...mapState(['visualizationCode','activeIndex','itemList']),
+      {
+        ...mapState(['visualizationCode', 'activeIndex', 'itemList']),
         panelItems() {
           return this.visualizationCode
         },
-        avtiveItem()
-
-        { console.log(this.activeIndex)
+        avtiveItem() {
+          console.log(this.activeIndex)
           console.log(this.viewItems)
           console.log(this.viewItems[this.activeIndex])
+          // Object.assign({}, this.viewItems[this.activeIndex])
           return this.viewItems[this.activeIndex]
-        // {console.log(this.activeIndex)
-        //
-        //   if (this.activeIndex)
-        //   return [this.viewItems[0],this.viewItems[1],this.viewItems[2]]
-        //   else
-        //     return {}
+          // {console.log(this.activeIndex)
+          //
+          //   if (this.activeIndex)
+          //   return [this.viewItems[0],this.viewItems[1],this.viewItems[2]]
+          //   else
+          //     return {}
         }
       },
     watch:
       {
         viewItems: {
-      handler (value, oldValue) {
-        let copiedValue = Object.assign({}, value)
-        console.log(copiedValue)
-       this.SETITEM(copiedValue)
-      },
-      deep: true
-    }
+          handler(value, oldValue) {
+            let copiedValue = Object.assign({}, value)
+
+            console.log(copiedValue)
+            this.SETITEM(copiedValue)
+          },
+          deep: true
+        }
       },
 
   }

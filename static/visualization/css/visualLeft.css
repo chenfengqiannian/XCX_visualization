@@ -76,7 +76,10 @@
 {
   font-size: 15px;
 }
-
+.panelFather
+{
+  display: flex;
+}
 
 
 
