@@ -10,14 +10,19 @@
       </div>
 
       <div class="leftContent">
-        <div class="panel">
+        <div class="panel" style="text-align: left">
           <div v-if="tabActive">
-            <div v-for="group in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
-              <div>{{group.id}}--{{group.text}}</div>
-              <div v-for="page in group.pageItems" v-if="page.id > -1">
-                {{page.id}}--{{page.text}}
-              </div>
-            </div>
+            <ul v-for="(group,index) in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
+              <li>
+                <div class="group pub" v-on:click="chooseIndex=index">{{group.text}}<span
+                  style="float: right;margin-right: 10px">添加</span></div>
+                <template v-if="index==chooseIndex">
+                  <ul v-for="(page,index2) in group.pageItems" v-if="page.id > -1">
+                    <li class="member pub">{{page.text}}</li>
+                  </ul>
+                </template>
+              </li>
+            </ul>
           </div>
           <div v-else>
             <div class="base">
@@ -97,6 +102,7 @@
   import axios from 'axios'
   import draggable from 'vuedraggable'
   import API from '../data/api'
+  import global_ from '../Global'
   import {mapActions} from 'vuex'
   import {mapState} from 'vuex'
   import {mapMutations} from 'vuex'
@@ -110,8 +116,8 @@
         tabActive: true,
         groupId: -1,
         atGroupId: 0,
+        chooseIndex: undefined,
         groupItems: [],
-
         //drag panel to view
         // viewItems: Object.assign({}, this.itemList),
 
@@ -146,6 +152,7 @@
     ,
     mounted: function () {
       // this.getInitData();
+
       this.getCode();
       this.createGroup()
       this.createPage();
@@ -159,24 +166,20 @@
         ...mapActions([
           'getCode'
         ]),
-        endMove() {
-          console.log(this.viewItems)
-          this.SETITEM(this.viewItems)
-
-        },
-
 
         chooseGroup(chooseId) {
           this.atGroupId = chooseId
         }
         ,
         createPage() {
+          let page = {
+            id: global_.PageId++,
+            text: '新页面'
+          };
           if (this.groupId > -1) {
-            this.groupItems[this.atGroupId].pageItems.push({
-              id: 0,
-              text: '新页面'
-            })
+            this.groupItems[this.atGroupId].pageItems.push(page)
           }
+
         }
         ,
         createGroup() {
@@ -193,8 +196,10 @@
 
     computed:
       {
+
         viewItems: {
-          get() {return this.itemList
+          get() {
+            return this.itemList
           },
           set(val) {
             let valList = JSON.parse(JSON.stringify(val));

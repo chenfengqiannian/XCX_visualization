@@ -1,59 +1,62 @@
 
-.right{
-    width: 985px;
+.right {
+  width: 985px;
 }
-
 
 /*Header*/
-.rightHeader li{
-    float: left;
-}
-.rightHeader a{
-    display: inline-block;
-    height: 30px;
-    padding: 0 30px;
+.rightHeader li {
+  float: left;
 }
 
-
-.rightHeader{
-    padding-right: 30px;
-    height: 60px;
-    background-color: antiquewhite;
-    line-height: 60px;
+.rightHeader a {
+  display: inline-block;
+  height: 30px;
+  padding: 0 30px;
 }
 
-.leftArea{
-    margin-left:100px;
+.rightHeader {
+  padding-right: 30px;
+  height: 60px;
+  background-color: antiquewhite;
+  line-height: 60px;
 }
 
-.pre{
-    font-size: 15px;
-    padding: 5px 15px;
-    border-radius: 10px;
-    margin-right: 10px;
+.leftArea {
+  margin-left: 100px;
 }
-.psButton{
-    color: cornflowerblue;
-    border: solid 1px cornflowerblue;
+
+.pre {
+  font-size: 15px;
+  padding: 5px 15px;
+  border-radius: 10px;
+  margin-right: 10px;
 }
-.pdButton{
-    color: white;
-    background-color: cornflowerblue;
+
+.psButton {
+  color: cornflowerblue;
+  border: solid 1px cornflowerblue;
+}
+
+.pdButton {
+  color: white;
+  background-color: cornflowerblue;
 }
 
 /*Content*/
-.rightContent{
-    background-color: orange;
-    height: 590px;
-    padding-top: 80px;
+.rightContent {
+  background-color: orange;
+  height: 590px;
+  padding-top: 80px;
+  text-align: left;
 }
 
 .view {
-    width: 320px;
-    height: 520px;
-    background-color: white;
-    margin-left: 150px;
+  width: 320px;
+  height: 520px;
+  background-color: white;
+  margin-left: 150px;
   display: inline-block;
+  text-align: center;
 }
 
 

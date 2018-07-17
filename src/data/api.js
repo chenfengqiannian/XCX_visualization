@@ -12,5 +12,11 @@ export const API = {
        console.log(response.data)
       cb(response)
     })
+  },
+  pushData(cb)
+  {
+    axios.post("/api/")
   }
+
+
 }

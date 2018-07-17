@@ -81,6 +81,24 @@
   display: flex;
 }
 
+.pub
+{
+  height: 40px;
+  padding-left: 10px;
+  line-height: 40px;
+    cursor:pointer;
+}
+.group
+{ position: relative;
+  background: #c7ddef;
+
+}
+.member
+{
+  background: beige;
+}
+
+
 
 
 
