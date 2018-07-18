@@ -5,12 +5,30 @@ import {API} from '../../data/api'
 const state = {
   visualizationCode: [],
   activeIndex: undefined,
-  itemList:[],
-  pageList:[]
+  pageList: [],
+  activePageId: 1
 }
 
 // getters
-const getters = {}
+const getters = {
+  itemList: (state, getters) => {
+    console.log(getters.activePage)
+    if (getters.activePage) {
+      return getters.activePage.itemList
+    }
+    return []
+
+  },
+  activePage: state => {
+    let activepage;
+    for (let page of state.pageList) {
+      if (page.id === state.activePageId) {
+        activepage = page;
+      }
+    }
+    return activepage;
+  }
+}
 
 // actions
 const actions = {
@@ -27,22 +45,47 @@ const actions = {
 
 // mutations
 const mutations = {
-  SETINDEX(state,index)
-  {
-    state.activeIndex=index
+  SETINDEX(state, index) {
+    state.activeIndex = index
   },
   CODE(state, visualizationCode) {
     state.visualizationCode = visualizationCode;
   },
   SETITEM(state, itemList) {
-
-    state.itemList=itemList;
+    let array = state.pageList
+    for (let i = 0; i <= array.length - 1; i++) {
+      if (array[i].id === state.activePageId) {
+        array[i].itemList=itemList
+        break
+      }
+    }
+    // state.itemList = itemList;
   }
   ,
-  SETPAGE(state,pageList)
-  {
-    state.pageList=pageList;
+  SETPAGE(state, pageList) {
+    state.pageList = pageList;
+  },
+  SETACTIVEID(state, id) {
+    state.activePageId = id
+  },
+  ADDPAGE(state, id) {
+    state.pageList.push({id: id, text: "新页面", template: "custom", name: "page" + id, itemList: []})
+    state.activePageId = id
+    console.log(state)
+  },
+  DELPAGE(state, id) {
+    let array = state.pageList
+    for (let i = 0; i <= array.length - 1; i++) {
+      if (array[i].id === id) {
+        array.splice(i, 1)
+        break
+      }
+    }
+    console.log(state.pageList)
+
   }
+
+
 }
 
 export default {

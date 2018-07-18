@@ -64,8 +64,8 @@
       <div class="rightHeader">
         <div class="leftArea fl">
           <ul>
-            <li><a class="icon">风格</a></li>
-            <li><a href="" class="icon">管理</a></li>
+            <li><a class="icon" @click="tryd">风格</a></li>
+            <li><a class="icon" >管理</a></li>
             <li><a href="" class="icon">帮助</a></li>
             <li><a href="" class="icon">客服</a></li>
             <li><a href="" class="icon">历史</a></li>
@@ -106,6 +106,7 @@
   import {mapActions} from 'vuex'
   import {mapState} from 'vuex'
   import {mapMutations} from 'vuex'
+  import { mapGetters } from 'vuex'
   import XcxShow from '@/components/XcxShow'
   import XcxEditor from '@/components/XcxEditor'
 
@@ -161,21 +162,29 @@
     methods:
       {
         ...mapMutations([
-          'CODE', 'SETITEM'
+          'CODE', 'SETITEM','ADDPAGE','DELPAGE'
         ]),
         ...mapActions([
           'getCode'
         ]),
+      tryd()
+      {
+        this.ADDPAGE(1)
+        this.ADDPAGE(2)
+        console.log(this.activePage)
 
+      },
+         tryp()
+      {
+        this.DELPAGE(1)
+      },
         chooseGroup(chooseId) {
           this.atGroupId = chooseId
         }
         ,
         createPage() {
-          let page = {
-            id: global_.PageId++,
-            text: '新页面'
-          };
+          this.ADDPAGE(global_.PageId++)
+          let page = this.activePage
           if (this.groupId > -1) {
             this.groupItems[this.atGroupId].pageItems.push(page)
           }
@@ -206,8 +215,8 @@
             this.SETITEM(valList)
           }
         },
-
-        ...mapState(['visualizationCode', 'activeIndex', 'itemList']),
+        ...mapGetters(['activePage','itemList']),
+        ...mapState(['visualizationCode', 'activeIndex']),
         panelItems() {
           return this.visualizationCode
         },
