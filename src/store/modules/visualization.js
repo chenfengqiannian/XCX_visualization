@@ -70,7 +70,7 @@ const mutations = {
   },
   ADDPAGE(state, id) {
     state.pageList.push({id: id, text: "新页面", template: "custom", name: "page" + id, itemList: []})
-    state.activePageId = id
+    this.commit("SETACTIVEID",id)
     console.log(state)
   },
   DELPAGE(state, id) {
