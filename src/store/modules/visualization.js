@@ -12,13 +12,13 @@ const state = {
 // getters
 const getters = {
   itemList: (state, getters) => {
-    console.log(getters.activePage)
     if (getters.activePage) {
       return getters.activePage.itemList
     }
     return []
 
   },
+
   activePage: state => {
     let activepage;
     for (let page of state.pageList) {
@@ -33,9 +33,7 @@ const getters = {
 // actions
 const actions = {
   getCode({commit}) {
-    console.log("getCode")
     API.visualizationcode((response) => {
-      console.log("getCode")
       commit('CODE', response.data)
     })
 
@@ -55,10 +53,11 @@ const mutations = {
     let array = state.pageList
     for (let i = 0; i <= array.length - 1; i++) {
       if (array[i].id === state.activePageId) {
-        array[i].itemList=itemList
+        array[i].itemList = itemList
         break
       }
     }
+    console.log(JSON.stringify(array))
     // state.itemList = itemList;
   }
   ,
@@ -69,9 +68,9 @@ const mutations = {
     state.activePageId = id
   },
   ADDPAGE(state, id) {
+    console.log(id)
     state.pageList.push({id: id, text: "新页面", template: "custom", name: "page" + id, itemList: []})
-    this.commit("SETACTIVEID",id)
-    console.log(state)
+    this.commit("SETACTIVEID", id)
   },
   DELPAGE(state, id) {
     let array = state.pageList
@@ -81,7 +80,6 @@ const mutations = {
         break
       }
     }
-    console.log(state.pageList)
 
   }
 

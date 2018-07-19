@@ -16,9 +16,11 @@
               <li>
                 <div class="group pub" v-on:click="chooseIndex=index">{{group.text}}<span
                   style="float: right;margin-right: 10px">添加</span></div>
-                <template v-if="index==chooseIndex">
+                <template v-if="index===chooseIndex">
                   <ul v-for="(page,index2) in group.pageItems" v-if="page.id > -1">
-                    <li class="member pub">{{page.text}}</li>
+                    <li class="member pub" v-bind:class="{ active: cactivePageId===page.id }"
+                        @click="mberClick(page.id)">{{page.text}},{{page.id}}
+                    </li>
                   </ul>
                 </template>
               </li>
@@ -64,8 +66,8 @@
       <div class="rightHeader">
         <div class="leftArea fl">
           <ul>
-            <li><a class="icon" @click="tryd">风格</a></li>
-            <li><a class="icon" >管理</a></li>
+            <li><a class="icon">风格</a></li>
+            <li><a class="icon">管理</a></li>
             <li><a href="" class="icon">帮助</a></li>
             <li><a href="" class="icon">客服</a></li>
             <li><a href="" class="icon">历史</a></li>
@@ -84,6 +86,7 @@
           <XcxShow v-for="(item, index) in viewItems"
                    v-bind:viewitem="item.code"
                    v-bind:index="index"
+                   v-bind:key="index"
 
 
           ></XcxShow>
@@ -101,12 +104,12 @@
 <script>
   import axios from 'axios'
   import draggable from 'vuedraggable'
-  import API from '../data/api'
+  import {API} from '../data/api'
   import global_ from '../Global'
   import {mapActions} from 'vuex'
   import {mapState} from 'vuex'
   import {mapMutations} from 'vuex'
-  import { mapGetters } from 'vuex'
+  import {mapGetters} from 'vuex'
   import XcxShow from '@/components/XcxShow'
   import XcxEditor from '@/components/XcxEditor'
 
@@ -117,7 +120,7 @@
         tabActive: true,
         groupId: -1,
         atGroupId: 0,
-        chooseIndex: undefined,
+        chooseIndex: 0,
         groupItems: [],
         //drag panel to view
         // viewItems: Object.assign({}, this.itemList),
@@ -153,7 +156,6 @@
     ,
     mounted: function () {
       // this.getInitData();
-
       this.getCode();
       this.createGroup()
       this.createPage();
@@ -162,24 +164,17 @@
     methods:
       {
         ...mapMutations([
-          'CODE', 'SETITEM','ADDPAGE','DELPAGE'
+          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID'
         ]),
         ...mapActions([
           'getCode'
         ]),
-      tryd()
-      {
-        this.ADDPAGE(1)
-        this.ADDPAGE(2)
-        console.log(this.activePage)
-
-      },
-         tryp()
-      {
-        this.DELPAGE(1)
-      },
+        mberClick(id) {
+          this.SETACTIVEID(id)
+        },
         chooseGroup(chooseId) {
           this.atGroupId = chooseId
+          console.log(this.rawJson)
         }
         ,
         createPage() {
@@ -205,7 +200,11 @@
 
     computed:
       {
-
+        ...mapGetters(['activePage', 'itemList']),
+        ...mapState(['visualizationCode', 'activeIndex', 'activePageId']),
+        cactivePageId() {
+          return this.activePageId
+        },
         viewItems: {
           get() {
             return this.itemList
@@ -215,8 +214,7 @@
             this.SETITEM(valList)
           }
         },
-        ...mapGetters(['activePage','itemList']),
-        ...mapState(['visualizationCode', 'activeIndex']),
+
         panelItems() {
           return this.visualizationCode
         },
