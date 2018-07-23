@@ -27,11 +27,8 @@
           return attrs;
         },
         styleObject() {
-          let changeStyle = {}
-          for (let changeStyleItem of this.viewitem.attrs.style) {
-            changeStyle[changeStyleItem.name] = changeStyleItem.value;
-          }
-          return changeStyle;
+
+          return this.viewitem.attrs.style;
         },
         innerHTML() {
           let item = this.viewitem;
