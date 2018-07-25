@@ -66,16 +66,16 @@
       <div class="rightHeader">
         <div class="leftArea fl">
           <ul>
-            <li><a class="icon">风格</a></li>
-            <li><a class="icon">管理</a></li>
-            <li><a href="" class="icon">帮助</a></li>
-            <li><a href="" class="icon">客服</a></li>
-            <li><a href="" class="icon">历史</a></li>
+            <li><a class="icon" style="display: none">风格</a></li>
+            <li><a class="icon" style="display: none">管理</a></li>
+            <li><a href="" class="icon" style="display: none">帮助</a></li>
+            <li><a href="" class="icon" style="display: none">客服</a></li>
+            <li><a href="" class="icon" style="display: none">历史</a></li>
           </ul>
         </div>
         <div class="rightArea fr">
-          <input type="button" value="预览" class="pre psButton" v-on:click=""/>
-          <input type="button" value="保存" class="pre psButton" v-on:click=""/>
+          <input type="button" value="预览" class="pre psButton" style="display: none" v-on:click=""/>
+          <input type="button" value="保存" class="pre psButton" style="display: none" v-on:click=""/>
           <input type="button" value="生成" class="pre pdButton" v-on:click=""/>
         </div>
       </div>
@@ -102,7 +102,6 @@
 </template>
 
 <script>
-  import axios from 'axios'
   import draggable from 'vuedraggable'
   import {API} from '../data/api'
   import global_ from '../Global'
@@ -156,6 +155,7 @@
     ,
     mounted: function () {
       // this.getInitData();
+      console.log(this.getQueryVariable("id"))
       this.getCode();
       this.createGroup()
       this.createPage();
@@ -163,6 +163,7 @@
     },
     methods:
       {
+
         ...mapMutations([
           'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID'
         ]),
@@ -230,9 +231,21 @@
           //   return [this.viewItems[0],this.viewItems[1],this.viewItems[2]]
           //   else
           //     return {}
-        }
-      },
+        },
 
+      },
+    watch:
+      {
+        itemList(val)
+
+        { let id=this.getQueryVariable("id")
+          if (val&&id) {
+            API.pushData((response) => {
+              console.log(response)
+            }, id, val)
+          }
+        }
+      }
 
   }
 </script>

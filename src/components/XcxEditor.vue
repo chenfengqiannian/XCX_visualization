@@ -12,6 +12,10 @@
       <!--v-on:input="inputChange(item,index,$event)"/>-->
       <input v-model="attrsObject[key]"/>
     </div>
+    <template v-if="innerHTMLObject">
+      <div>内容</div>
+    <input v-model="innerHTMLObject"/>
+      </template>
   </div>
 </template>
 <script>
@@ -41,7 +45,15 @@
           }
           return {}
 
+        },innerHTMLObject()
+        {
+           if (this.avtiveitem) {
+            let object = this.avtiveitem.code.innerHTML;
+            return object
+          }
+          return undefined
         }
+
 
       }
 

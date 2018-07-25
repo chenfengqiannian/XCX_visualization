@@ -11,8 +11,15 @@ export const API = {
       cb(response)
     })
   },
-  pushData(cb, pageList) {
-    axios.post("/api/")
+  pushData(cb, id, pageList) {
+    axios.put("/api/customapp/" + id + "/", {
+      appJson: JSON.stringify(pageList),
+    }).then((response) => {
+      cb(response)
+    }).catch((err) => {
+      console.log(err.response);
+      // err.response 是 undefined
+    })
   },
   login(cb) {
     axios.post("login/", {
@@ -20,7 +27,7 @@ export const API = {
       password: '1234569'
     }, {headers: {'Content-Type': 'application/json'}}).then((response) => {
       if (cb)
-      cb(response)
+        cb(response)
     })
   }
 
