@@ -21,6 +21,13 @@ export const API = {
       // err.response 是 undefined
     })
   },
+  getData(cb, id) {
+    axios.get("/api/customapp/" + id + "/").then((response) => {
+      cb(response)
+    }).catch((err) => {
+      console.log(err);
+    })
+  },
 
   login(cb) {
     axios.post("login/", {

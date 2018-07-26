@@ -154,15 +154,16 @@
       XcxEditor
     },
     created: function () {
-      this.debouncedSend = _.debounce(this.sendItemList,1000)
+      // this.debouncedSend = _.debounce(this.sendItemList,1000)
     }
     ,
     mounted: function () {
       // this.getInitData();
       console.log(this.getQueryVariable("id"))
       this.getCode();
-      this.createGroup()
-      this.createPage();
+      this.getData(this.getQueryVariable("id"))
+      // this.createGroup()
+      // this.createPage();
 
     },
     methods:
@@ -173,7 +174,8 @@
         ]),
         ...mapActions([
           'getCode',
-          'sendItemList'
+          'sendItemList',
+          'getData'
         ]),
         mberClick(id) {
           this.SETACTIVEID(id)
@@ -216,7 +218,8 @@
             return this.itemList
           },
           set(val) {
-            let valList = JSON.parse(JSON.stringify(val));
+            let valList=_.cloneDeep(val)
+            // let valList = JSON.parse(JSON.stringify(val));
             this.SETITEM(valList)
           }
         },
@@ -243,7 +246,7 @@
       {
         pageList: {
           handler: function (newVal, oldVal) {
-            this.debouncedSend()
+            // this.debouncedSend()
           },
           deep: true
         }
