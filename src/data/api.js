@@ -21,6 +21,7 @@ export const API = {
       // err.response 是 undefined
     })
   },
+
   login(cb) {
     axios.post("login/", {
       username: 'root',

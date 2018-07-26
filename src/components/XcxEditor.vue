@@ -14,12 +14,14 @@
     </div>
     <template v-if="innerHTMLObject">
       <div>内容</div>
-    <input v-model="innerHTMLObject"/>
-      </template>
+      <input v-model="innerHTMLObject"/>
+    </template>
   </div>
 </template>
 <script>
   import {mapState} from 'vuex'
+  import {mapActions} from 'vuex'
+  import _ from 'lodash';
 
   export default {
 
@@ -29,7 +31,7 @@
 
     computed:
       {
-        ...mapState(['visualizationCode', 'itemList']),
+        ...mapState(['visualizationCode']),
         styleObject() {
           if (this.avtiveitem) {
             let arr = this.avtiveitem.code.attrs.style;
@@ -45,18 +47,28 @@
           }
           return {}
 
-        },innerHTMLObject()
-        {
-           if (this.avtiveitem) {
-            let object = this.avtiveitem.code.innerHTML;
-            return object
-          }
-          return undefined
         }
+        , innerHTMLObject:
+          {
+            get() {
+              if (this.avtiveitem) {
+                let object = this.avtiveitem.code.innerHTML;
+                return object
+              }
+              return undefined
+
+            },
+            set(val) {
+              this.avtiveitem.code.innerHTML = val
+            }
+
+
+          },
+
+
 
 
       }
-
   }
 </script>
 

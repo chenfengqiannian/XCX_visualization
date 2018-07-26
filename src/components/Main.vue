@@ -105,6 +105,7 @@
   import draggable from 'vuedraggable'
   import {API} from '../data/api'
   import global_ from '../Global'
+  import _ from 'lodash';
   import {mapActions} from 'vuex'
   import {mapState} from 'vuex'
   import {mapMutations} from 'vuex'
@@ -151,6 +152,9 @@
       draggable,
       XcxShow,
       XcxEditor
+    },
+    created: function () {
+      this.debouncedSend = _.debounce(this.sendItemList,1000)
     }
     ,
     mounted: function () {
@@ -168,7 +172,8 @@
           'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID'
         ]),
         ...mapActions([
-          'getCode'
+          'getCode',
+          'sendItemList'
         ]),
         mberClick(id) {
           this.SETACTIVEID(id)
@@ -202,7 +207,7 @@
     computed:
       {
         ...mapGetters(['activePage', 'itemList']),
-        ...mapState(['visualizationCode', 'activeIndex', 'activePageId']),
+        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'pageList']),
         cactivePageId() {
           return this.activePageId
         },
@@ -236,14 +241,11 @@
       },
     watch:
       {
-        itemList(val)
-
-        { let id=this.getQueryVariable("id")
-          if (val&&id) {
-            API.pushData((response) => {
-              console.log(response)
-            }, id, val)
-          }
+        pageList: {
+          handler: function (newVal, oldVal) {
+            this.debouncedSend()
+          },
+          deep: true
         }
       }
 
