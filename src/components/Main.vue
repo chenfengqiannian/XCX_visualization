@@ -154,7 +154,7 @@
       XcxEditor
     },
     created: function () {
-      // this.debouncedSend = _.debounce(this.sendItemList,1000)
+      this.debouncedSend = _.debounce(this.sendItemList,1000)
     }
     ,
     mounted: function () {
@@ -227,6 +227,7 @@
         panelItems() {
           return this.visualizationCode
         },
+
         avtiveItem() {
           // console.log(this.activeIndex)
           // console.log(this.viewItems)
@@ -246,7 +247,7 @@
       {
         pageList: {
           handler: function (newVal, oldVal) {
-            // this.debouncedSend()
+            this.debouncedSend()
           },
           deep: true
         }

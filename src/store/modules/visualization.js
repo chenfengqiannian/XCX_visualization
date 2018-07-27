@@ -1,12 +1,14 @@
 // initial state
 import axios from 'axios'
 import {API} from '../../data/api'
+import {getters} from "../../vuex/getters";
 
 const state = {
   visualizationCode: [],
   activeIndex: undefined,
   pageList: [],
-  activePageId: 1
+  activePageId: 1,
+  activeGroupId: 1
 }
 
 // getters
@@ -18,6 +20,19 @@ const getters = {
     return []
 
   },
+  lastGroupId: state => {
+
+    let id=state.pageList[state.pageList.length-1].id
+    return id;
+
+  },
+  lastPageId: (state,getters) =>
+  {
+   let id=state.pageList[state.pageList.length-1].itemList[state.pageList[state.pageList.length-1].itemList.length-1].id
+
+    return id;
+  }
+  ,
 
   activePage: state => {
     let activepage;
@@ -39,9 +54,9 @@ const actions = {
   },
   getData({commit}, id) {
     API.getData((response) => {
-      let appJson =JSON.parse(response.data.appJson)
+      let appJson = JSON.parse(response.data.appJson)
       commit('SETPAGE', appJson)
-    },id)
+    }, id)
   },
   sendItemList({commit, state}) {
 
