@@ -1,17 +1,18 @@
 // initial state
 import axios from 'axios'
 import {API} from '../../data/api'
-import {getters} from "../../vuex/getters";
+
 
 const state = {
   visualizationCode: [],
   activeIndex: undefined,
   pageList: [],
   activePageId: 1,
-  activeGroupId: 1
+  activeGroupId: 1,
+  v_groupItems:[]
 }
 
-// getters
+
 const getters = {
   itemList: (state, getters) => {
     if (getters.activePage) {
@@ -19,19 +20,20 @@ const getters = {
     }
     return []
 
-  },
-  lastGroupId: state => {
-
-    let id=state.pageList[state.pageList.length-1].id
-    return id;
-
-  },
-  lastPageId: (state,getters) =>
-  {
-   let id=state.pageList[state.pageList.length-1].itemList[state.pageList[state.pageList.length-1].itemList.length-1].id
-
-    return id;
   }
+  // ,
+  // lastGroupId: state => {
+  //
+  //   let id=state.pageList[state.pageList.length-1].id
+  //   return id;
+  //
+  // },
+  // lastPageId: (state,getters) =>
+  // {
+  //  let id=state.pageList[state.pageList.length-1].itemList[state.pageList[state.pageList.length-1].itemList.length-1].id
+  //
+  //   return id;
+  // }
   ,
 
   activePage: state => {
@@ -58,7 +60,7 @@ const actions = {
       commit('SETPAGE', appJson)
     }, id)
   },
-  sendItemList({commit, state}) {
+  sendGroupList({commit, state}) {
 
     function getQueryVariable(variable) {
       let query = window.location.search.substring(1);
@@ -74,10 +76,10 @@ const actions = {
 
     let id = getQueryVariable("id")
     console.log(id)
-    if (state.pageList && id) {
+    if (state.v_groupItems && id) {
       API.pushData((response) => {
         console.log(response)
-      }, id, state.pageList)
+      }, id, state.v_groupItems)
     }
   }
 
@@ -115,6 +117,11 @@ const mutations = {
     state.pageList.push({id: id, text: "新页面", template: "custom", name: "page" + id, itemList: []})
     this.commit("SETACTIVEID", id)
   },
+  SETGUROP(state,groupList)
+  {
+    state.v_groupItems=groupList
+  }
+  ,
   DELPAGE(state, id) {
     let array = state.pageList
     for (let i = 0; i <= array.length - 1; i++) {

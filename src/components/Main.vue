@@ -121,7 +121,6 @@
         groupId: -1,
         atGroupId: 0,
         chooseIndex: 0,
-        groupItems: [],
         //drag panel to view
         // viewItems: Object.assign({}, this.itemList),
 
@@ -154,27 +153,27 @@
       XcxEditor
     },
     created: function () {
-      this.debouncedSend = _.debounce(this.sendItemList,1000)
+      this.debouncedSend = _.debounce(this.sendGroupList,1000)
     }
     ,
     mounted: function () {
       // this.getInitData();
-      console.log(this.getQueryVariable("id"))
+      // console.log(this.getQueryVariable("id"))
       this.getCode();
-      this.getData(this.getQueryVariable("id"))
-      // this.createGroup()
-      // this.createPage();
+      // this.getData(this.getQueryVariable("id"))
+      this.createGroup()
+      this.createPage();
 
     },
     methods:
       {
 
         ...mapMutations([
-          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID'
+          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID','SETGUROP'
         ]),
         ...mapActions([
           'getCode',
-          'sendItemList',
+          'sendGroupList',
           'getData'
         ]),
         mberClick(id) {
@@ -209,7 +208,8 @@
     computed:
       {
         ...mapGetters(['activePage', 'itemList']),
-        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'pageList']),
+        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'pageList','v_groupItems']),
+
         cactivePageId() {
           return this.activePageId
         },
@@ -221,6 +221,16 @@
             let valList=_.cloneDeep(val)
             // let valList = JSON.parse(JSON.stringify(val));
             this.SETITEM(valList)
+          }
+        },
+        groupItems: {
+          get() {
+            return this.v_groupItems
+          },
+          set(val) {
+            let valList=_.cloneDeep(val)
+            // let valList = JSON.parse(JSON.stringify(val));
+            this.SETGUROP(valList)
           }
         },
 
