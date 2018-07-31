@@ -19,7 +19,7 @@
                 <template v-if="index===chooseIndex">
                   <ul v-for="(page,index2) in group.pageItems" v-if="page.id > -1">
                     <li class="member pub" v-bind:class="{ active: cactivePageId===page.id }"
-                        @click="mberClick(page.id)">{{page.text}},{{page.id}}
+                        @click="mberClick(page.id)">{{page.text}}
                     </li>
                   </ul>
                 </template>
@@ -153,23 +153,22 @@
       XcxEditor
     },
     created: function () {
-      this.debouncedSend = _.debounce(this.sendGroupList,1000)
+      this.debouncedSend = _.debounce(this.sendGroupList, 1000)
     }
     ,
     mounted: function () {
       // this.getInitData();
       // console.log(this.getQueryVariable("id"))
       this.getCode();
-      // this.getData(this.getQueryVariable("id"))
-      this.createGroup()
-      this.createPage();
+      this.getData(this.getQueryVariable("id"))
+
 
     },
     methods:
       {
 
         ...mapMutations([
-          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID','SETGUROP'
+          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID', 'SETGUROP','SETACTIVEGRUOPID'
         ]),
         ...mapActions([
           'getCode',
@@ -180,23 +179,28 @@
           this.SETACTIVEID(id)
         },
         chooseGroup(chooseId) {
-          this.atGroupId = chooseId
-          console.log(this.rawJson)
+
+          this.SETACTIVEGRUOPID(chooseId)
         }
         ,
         createPage() {
-          this.ADDPAGE(global_.PageId++)
-          let page = this.activePage
-          if (this.groupId > -1) {
-            this.groupItems[this.atGroupId].pageItems.push(page)
+          let slastPageId = this.lastPageId + 1
+          let self = this
+          let obj = this.groupItems.find((val) => {
+            return val.id === self.activeGroupId
+          })
+          if (obj) {
+            obj.pageItems.push({id: slastPageId, text: "新页面", template: "custom", name: "page" + slastPageId, itemList: []})
+            this.SETACTIVEID(slastPageId)
           }
 
         }
         ,
         createGroup() {
-          this.groupId++;
+          let slastGroupId = _.cloneDeep(this.lastGroupId) + 1
+          this.SETACTIVEGRUOPID(slastGroupId)
           this.groupItems.push({
-            id: this.groupId,
+            id: slastGroupId,
             text: '新组',
             pageItems: []
           })
@@ -207,8 +211,8 @@
 
     computed:
       {
-        ...mapGetters(['activePage', 'itemList']),
-        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'pageList','v_groupItems']),
+        ...mapGetters(['activePage', 'itemList', 'lastGroupId', 'lastPageId']),
+        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'activeGroupId','pageList', 'v_groupItems']),
 
         cactivePageId() {
           return this.activePageId
@@ -218,7 +222,7 @@
             return this.itemList
           },
           set(val) {
-            let valList=_.cloneDeep(val)
+            let valList = _.cloneDeep(val)
             // let valList = JSON.parse(JSON.stringify(val));
             this.SETITEM(valList)
           }
@@ -228,7 +232,7 @@
             return this.v_groupItems
           },
           set(val) {
-            let valList=_.cloneDeep(val)
+            let valList = _.cloneDeep(val)
             // let valList = JSON.parse(JSON.stringify(val));
             this.SETGUROP(valList)
           }
@@ -255,7 +259,7 @@
       },
     watch:
       {
-        pageList: {
+        v_groupItems: {
           handler: function (newVal, oldVal) {
             this.debouncedSend()
           },

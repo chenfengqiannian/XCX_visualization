@@ -1,7 +1,7 @@
 // initial state
 import axios from 'axios'
 import {API} from '../../data/api'
-
+import _ from "lodash"
 
 const state = {
   visualizationCode: [],
@@ -9,7 +9,7 @@ const state = {
   pageList: [],
   activePageId: 1,
   activeGroupId: 1,
-  v_groupItems:[]
+  v_groupItems: []
 }
 
 
@@ -21,29 +21,39 @@ const getters = {
     return []
 
   }
-  // ,
-  // lastGroupId: state => {
-  //
-  //   let id=state.pageList[state.pageList.length-1].id
-  //   return id;
-  //
-  // },
-  // lastPageId: (state,getters) =>
-  // {
-  //  let id=state.pageList[state.pageList.length-1].itemList[state.pageList[state.pageList.length-1].itemList.length-1].id
-  //
-  //   return id;
-  // }
+  ,
+  lastGroupId: state => {
+    let obj = _.last(state.v_groupItems)
+    if (obj && 'id' in obj) {
+      return obj.id
+    }
+
+    return 0
+
+  },
+  lastPageId: (state, getters) => {
+    let groupObj = _.last(state.v_groupItems)
+    if (groupObj) {
+      let pageObj = _.last(groupObj.pageItems)
+      if (pageObj && "id" in pageObj) {
+        return pageObj.id
+      }
+    }
+    return 0;
+  }
   ,
 
   activePage: state => {
-    let activepage;
-    for (let page of state.pageList) {
-      if (page.id === state.activePageId) {
-        activepage = page;
-      }
+    let page=undefined
+   let obj = state.v_groupItems.find((val) => {
+      return val.id===state.activeGroupId
+    })
+    if(obj) {
+      page = obj.pageItems.find((val) => {
+        return val.id === state.activePageId
+      })
     }
-    return activepage;
+    return page;
   }
 }
 
@@ -57,7 +67,7 @@ const actions = {
   getData({commit}, id) {
     API.getData((response) => {
       let appJson = JSON.parse(response.data.appJson)
-      commit('SETPAGE', appJson)
+      commit('SETGUROP', appJson)
     }, id)
   },
   sendGroupList({commit, state}) {
@@ -95,19 +105,34 @@ const mutations = {
     state.visualizationCode = visualizationCode;
   },
   SETITEM(state, itemList) {
-    let array = state.pageList
-    for (let i = 0; i <= array.length - 1; i++) {
-      if (array[i].id === state.activePageId) {
-        array[i].itemList = itemList
-        break
-      }
-    }
-    console.log(JSON.stringify(array))
+    let self = this
+
+
+    let obj = state.v_groupItems.find((val) => {
+      return val.id===state.activeGroupId
+    })
+    let page=obj.pageItems.find((val)=>
+    {
+      return val.id===state.activePageId
+    })
+    page.itemList=itemList
+    // let array = state.pageList
+    // for (let i = 0; i <= array.length - 1; i++) {
+    //   if (array[i].id === state.activePageId) {
+    //     array[i].itemList = itemList
+    //     break
+    //   }
+    // }
+    // console.log(JSON.stringify(array))
     // state.itemList = itemList;
   }
   ,
   SETPAGE(state, pageList) {
     state.pageList = pageList;
+  },
+  SETACTIVEGRUOPID(state, id)
+  {
+    state.activeGroupId = id
   },
   SETACTIVEID(state, id) {
     state.activePageId = id
@@ -117,9 +142,8 @@ const mutations = {
     state.pageList.push({id: id, text: "新页面", template: "custom", name: "page" + id, itemList: []})
     this.commit("SETACTIVEID", id)
   },
-  SETGUROP(state,groupList)
-  {
-    state.v_groupItems=groupList
+  SETGUROP(state, groupList) {
+    state.v_groupItems = groupList
   }
   ,
   DELPAGE(state, id) {
