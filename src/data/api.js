@@ -1,7 +1,14 @@
 import Vue from 'vue'
 import axios from 'axios'
+if (process.env.NODE_ENV === 'developmentHot')
+{
+  axios.defaults.baseURL = 'http://127.0.0.1:8000';
+}
+else
+{
+  axios.defaults.baseURL = 'https://xcx.yibangbang99.com';
+}
 
-axios.defaults.baseURL = 'http://127.0.0.1:8000';
 export const API = {
   visualizationcode(cb) {
     axios.get("/api/visualizationcode/").then((response) => {

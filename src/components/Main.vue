@@ -76,7 +76,7 @@
         <div class="rightArea fr">
           <input type="button" value="预览" class="pre psButton" style="display: none" v-on:click=""/>
           <input type="button" value="保存" class="pre psButton" style="display: none" v-on:click=""/>
-          <input type="button" value="生成" class="pre pdButton" v-on:click=""/>
+          <input type="button" value="生成" class="pre pdButton" v-on:click="sc"/>
         </div>
       </div>
       <div class="rightContent">
@@ -175,6 +175,10 @@
           'sendGroupList',
           'getData'
         ]),
+        sc()
+        {let id =this.getQueryVariable("id")
+          window.location.href=window.location.origin +"/setting/?id="+id
+        },
         mberClick(id) {
           this.SETACTIVEID(id)
         },
