@@ -177,7 +177,7 @@
         ]),
         sc()
         {let id =this.getQueryVariable("id")
-          window.location.href=window.location.origin +"/setting/?id="+id
+          window.location.href=window.location.origin +"/setting/?c_id="+id
         },
         mberClick(id) {
           this.SETACTIVEID(id)
