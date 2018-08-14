@@ -59,6 +59,8 @@
 
             },
             set(val) {
+              if(val==="")
+                val=" "
               this.avtiveitem.code.innerHTML = val
             }
 
