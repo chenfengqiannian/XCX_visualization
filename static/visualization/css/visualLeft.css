@@ -12,43 +12,53 @@
 .leftHeader a {
   display: inline-block;
   height: 30px;
-  padding: 0 45px;
+
 }
 
 .leftHeader {
-  height: 60px;
-  background-color: antiquewhite;
-  line-height: 60px;
+  height: 58px;
+  line-height: 58px;
+  width: 500px;;
 }
 
 /*Content*/
 .leftContent {
-  background-color: aquamarine;
-  height: 670px;
+  height: 100%;
+
 }
 
 .panel {
-  height: 610px;
+  height: 89%;
+  overflow-y: auto;
+}
+.classPanelItems
+{
+ height: 100%;
 }
 
 .new {
-  height: 60px;
-  line-height: 60px;
-  background-color: white;
+  height: 47px;
+  line-height: 47px;
+  display: flex;
+  justify-content:space-between;
+  margin-top: 17px;
 }
+
 
 .newButton {
   font-size: 15px;
-  padding: 8px 30px;
-  margin-left: 18px;
-  border-radius: 10px;
+  text-align: center;
+  background-color: #5355c3;
+  border-radius: 6px;
   color: white;
-  background-color: cornflowerblue
+  height: 100%;
+  width: 46%;
+
 }
 
 .base {
-  height: 305px;
-  overflow: scroll;
+  height: 100%;
+
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
@@ -62,7 +72,7 @@
 .panelbox {
   width: 98px;
   height: 98px;
-  background-color: #c7ddef;
+
   text-align: center;
 
 }
@@ -83,26 +93,64 @@
 
 .pub
 {
-  height: 40px;
-  padding-left: 10px;
-  line-height: 40px;
-    cursor:pointer;
+  height: 49px;
+  line-height: 49px;
+  cursor:pointer;
+vertical-align:middle;
 }
 .group
-{ position: relative;
-  background: #c7ddef;
+{
+font-size: 15px;
 
 }
+
+.leftImg
+{
+  width: 20px;
+  height: 20px;
+  vertical-align:middle;
+
+  margin-top: -4px;
+   background-size: cover;
+  display: inline-block;
+}
+
+.groupImg
+{
+  background-image: url("../img/folder_b.png");
+  margin-right: 15px;
+margin-left: 30px;
+}
+.memberImg
+{
+  background-image: url("../img/page_b.png");
+  margin-right: 18px;
+  margin-left: 68px;
+
+}
+
 .member
 {
-  background: beige;
+  font-size: 15px;
 }
 
 .active
 {
-  border:1px solid aqua;
+  background-color: #5355c3;
+  color: white;
 }
-
-
+.groupActive
+{
+  background-color: #5355c3;
+  color: white;
+}
+.groupActive .groupImg
+{
+   background-image: url("../img/folder_w.png");
+}
+.active .memberImg
+{
+  background-image: url("../img/page_w.png");
+}
 
 

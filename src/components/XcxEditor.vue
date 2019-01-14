@@ -1,21 +1,21 @@
 <template>
   <div>
-    <div v-for="(item, key) in styleObject">
-      <div>{{key}}</div>
+    <div v-for="(item, key) in styleObject" class="editor">
+      <div class="editorName">{{key}}</div>
       <!--<input v-bind:value="item.value"-->
       <!--v-on:input="inputChange(item,index,$event)"/>-->
-      <input v-model="styleObject[key]"/>
+      <textarea v-model="styleObject[key]"/>
     </div>
-    <div v-for="(item,key) in attrsObject" v-if="key!='style'" style="margin-top: 50px">
-      <div>{{key}}</div>
+    <div v-for="(item,key) in attrsObject" v-if="key!='style'" class="editor">
+      <div class="editorName">{{key}}</div>
       <!--<input v-bind:value="item.value"-->
       <!--v-on:input="inputChange(item,index,$event)"/>-->
-      <input v-model="attrsObject[key]"/>
+      <textarea v-model="attrsObject[key]"/>
     </div>
-    <template v-if="innerHTMLObject">
-      <div>内容</div>
-      <input v-model="innerHTMLObject"/>
-    </template>
+    <div v-if="innerHTMLObject" class="editor">
+      <div class="editorName">内容</div>
+      <textarea v-model="innerHTMLObject"/>
+    </div>
   </div>
 </template>
 <script>
@@ -75,5 +75,29 @@
 </script>
 
 <style scoped>
+.editor
+{
+  background-color: white;
+  border-radius: 6px;
+  height: 71px;
+  margin-bottom: 16px;
+
+}
+  .editor textarea
+  {
+    border:none;
+    color: #636681;
+    font-size: 17px;
+    margin-left: 18px;
+    margin-top: 5px;
+    width:299px;
+    height: 35px;
+  }
+  .editorName
+  {margin-left: 18px;
+  margin-top: 20px;
+    color: #d2d2d2;
+    font-size: 18px;
+  }
 
 </style>

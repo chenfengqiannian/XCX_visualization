@@ -3,6 +3,7 @@ html,body{
     width: 1280px;
 }
 
+
 body,ul,ol,li,p,h1,h2,h3,h4,h5,h6,form,fieldset,table,td,img,div,dl,dt,dd,input{
     margin: 0px;
     padding: 0px;
@@ -42,5 +43,25 @@ li{
     display: none;
 }
 
+.top{
+  height:58px;
+  background-color: white;
+  display: flex;
+  justify-content: space-between;
+  align-items:center;
 
+
+}
+.bottom
+{
+  width: 100%;
+  height: calc(100% - 75px);
+  display: flex;
+  justify-content: space-between;
+  margin-top: 33px;
+
+
+}
+body
+{background-color:#8f8f8f}
 

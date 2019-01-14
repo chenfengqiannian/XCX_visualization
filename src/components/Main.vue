@@ -1,13 +1,93 @@
 <template>
   <div class="main" id="app">
+    <div class="top">
 
-    <div class="left fl">
-      <div class="leftHeader">
-        <ul>
-          <li v-bind:class="" v-on:click="tabActive=true"><a>页面管理</a></li>
-          <li v-bind:class="" v-on:click="tabActive=false"><a>组件库</a></li>
-        </ul>
+      <div v-bind:class="" v-on:click="tabActive=true"
+           style="margin-left: 82px;width: 149px;color: #5355c3;font-size: 17px">页面管理
       </div>
+      <div v-bind:class="" v-on:click="tabActive=false"
+           style="margin-left: 62px;width: 110px;color: #5355c3;font-size: 17px">组件库
+      </div>
+      <div style="line-height: 58px;height:58px;width: 100%;margin-left: 375px;font-size: 21px;color: #5355c3">小程序<span
+        style="color: #f2926d">可视化</span></div>
+      <input type="button" v-on:click="sc" value="生成"
+             style="border-radius: 5px;line-height: 34px;font-size: 15px;height:34px;width: 131px;background-color: #5355c3;text-align: center;color: white;margin-right: 51px"/>
+
+    </div>
+    <div class="bottom">
+      <div class="fleft" style="height:90%;width: 323px;margin-left: 47px;border-top-left-radius:6px;
+border-top-right-radius:6px;overflow-y: hidden">
+        <div class="leftContent">
+          <div class="panel" v-bind:class="{classPanelItems}" style="text-align: left;background-color: white;">
+            <div v-if="tabActive">
+              <ul v-for="(group,index) in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
+                <li>
+                  <div class="group pub" v-bind:class="{ groupActive: (activeGroupId===group.id && groupOrItem===0)}"
+                       v-on:click="chooseIndex=index">
+                    <div class="leftImg groupImg"></div>
+                    {{group.text}}
+                  </div>
+                  <template v-if="index===chooseIndex">
+                    <ul v-for="(page,index2) in group.pageItems" v-if="page.id > -1">
+                      <li class="member pub" v-bind:class="{ active: (cactivePageId===page.id && groupOrItem===1) }"
+                          @click.stop="mberClick(page.id)">
+                        <div class="leftImg memberImg"></div>
+                        {{page.text}}
+                      </li>
+                    </ul>
+                  </template>
+                </li>
+              </ul>
+            </div>
+            <template v-else>
+              <div class="base">
+                <!--   base  -->
+                <draggable v-model="panelItems" :options="panelOption" class="panelFather">
+                  <div v-for="item in panelItems" class="panelbox">
+                    <img v-bind:src="item.images" class="panel-img"/>
+                    <div class="panelbox-text">{{item.name}}</div>
+                  </div>
+                </draggable>
+              </div>
+
+
+            </template>
+          </div>
+
+          <div class="new" v-if="tabActive">
+            <input type="button" value="添加页面" class="newButton" v-on:click="createPage"/>
+            <input type="button" value="添加分组" class="newButton" v-on:click="createGroup"/>
+          </div>
+        </div>
+      </div>
+      <div class="fcentre" style="height:90%;width: 335px;background-color: white">
+
+        <div class="rightContent">
+
+          <!--320x520-->
+          <draggable class="view" v-model="viewItems" :options="viewOption">
+            <XcxShow v-for="(item, index) in viewItems"
+                     v-bind:viewitem="item.code"
+                     v-bind:index="index"
+                     v-bind:key="index"
+
+
+            ></XcxShow>
+          </draggable>
+
+          <!--<XcxEditor v-bind:avtiveitem="avtiveItem" class="changeItemView"-->
+          <!--style="display: inline-block;vertical-align: top;"></XcxEditor>-->
+        </div>
+      </div>
+      <div class="fright" style="height:90%;width: 323px;margin-right: 47px;">
+        <XcxEditor v-bind:avtiveitem="avtiveItem" class="changeItemView"
+                   style="display: inline-block;vertical-align: top;width: 100%"></XcxEditor>
+      </div>
+    </div>
+
+
+    <div class="left fl" style="display:none;">
+
 
       <div class="leftContent">
         <div class="panel" style="text-align: left">
@@ -62,7 +142,7 @@
     </div>
 
 
-    <div class="right fr">
+    <div class="right fr" style="display: none">
       <div class="rightHeader">
         <div class="leftArea fl">
           <ul>
@@ -76,7 +156,7 @@
         <div class="rightArea fr">
           <input type="button" value="预览" class="pre psButton" style="display: none" v-on:click=""/>
           <input type="button" value="保存" class="pre psButton" style="display: none" v-on:click=""/>
-          <input type="button" value="生成" class="pre pdButton" v-on:click="sc"/>
+          <input type="button" value="生成" class="pre pdButton" style="display: none" v-on:click="sc"/>
         </div>
       </div>
       <div class="rightContent">
@@ -123,7 +203,7 @@
         chooseIndex: 0,
         //drag panel to view
         // viewItems: Object.assign({}, this.itemList),
-
+        groupOrItem: 0,
 
         panelOption: {
           group: {
@@ -168,23 +248,28 @@
       {
 
         ...mapMutations([
-          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID', 'SETGUROP','SETACTIVEGRUOPID'
+          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID', 'SETGUROP', 'SETACTIVEGRUOPID'
         ]),
         ...mapActions([
           'getCode',
           'sendGroupList',
           'getData'
         ]),
-        sc()
-        {let id =this.getQueryVariable("id")
-          window.location.href=window.location.origin +"/setting/?c_id="+id
+
+        sc() {
+          let id = this.getQueryVariable("id")
+          window.location.href = window.location.origin + "/setting/?c_id=" + id
         },
         mberClick(id) {
           this.SETACTIVEID(id)
+
+          this.groupOrItem = 1
+
         },
         chooseGroup(chooseId) {
-
           this.SETACTIVEGRUOPID(chooseId)
+
+          this.groupOrItem = 0
         }
         ,
         createPage() {
@@ -194,7 +279,13 @@
             return val.id === self.activeGroupId
           })
           if (obj) {
-            obj.pageItems.push({id: slastPageId, text: "新页面", template: "custom", name: "page" + slastPageId, itemList: []})
+            obj.pageItems.push({
+              id: slastPageId,
+              text: "新页面",
+              template: "custom",
+              name: "page" + slastPageId,
+              itemList: []
+            })
             this.SETACTIVEID(slastPageId)
           }
 
@@ -216,8 +307,13 @@
     computed:
       {
         ...mapGetters(['activePage', 'itemList', 'lastGroupId', 'lastPageId']),
-        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'activeGroupId','pageList', 'v_groupItems']),
-
+        ...mapState(['visualizationCode', 'activeIndex', 'activePageId', 'activeGroupId', 'pageList', 'v_groupItems']),
+        classPanelItems() {
+          if (this.tabActive === false) {
+            return "classPanelItems"
+          }
+          return
+        },
         cactivePageId() {
           return this.activePageId
         },

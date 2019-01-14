@@ -60,11 +60,33 @@ const getters = {
 // actions
 const actions = {
   getCode({commit}) {
+//     let code=[
+//     {
+//         "id": 3,
+//         "name": "文本",
+//         "description": "文本",
+//         "code": "{\"htmlTag\": \"p\",\"wxmlTag\": \"text\",\"attrs\": {\"style\": {\"color\":\"black\",\"padding\":\"19px\"}},\"child\": [],\"innerHTML\":\"予丰科技\"}\r\n",
+//         "images": "https://xcx.yibangbang99.com/media/images/text.png"
+//     },
+//     {
+//         "id": 4,
+//         "name": "图片",
+//         "description": "image",
+//         "code": "{\"htmlTag\": \"img\",\"wxmlTag\": \"image\",\"attrs\": {\"mode\":\"widthFix\",\"src\":\"https://xcx.yibangbang99.com/media/201701111406359467%20(1)_20180201142611_417.jpg\",\"style\": {\"width\":\"240px\",\"height\":\"240px\"}},\"child\": [],\"innerHTML\":\"\"}\r\n",
+//         "images": "https://xcx.yibangbang99.com/media/images/1.jpg"
+//     }
+// ]
+//     commit('CODE',code)
+//     return
     API.visualizationcode((response) => {
       commit('CODE', response.data)
     })
   },
   getData({commit}, id) {
+    // let appJ=[{"id":1,"text":"新组","pageItems":[{"id":1,"text":"新页面","template":"custom","name":"page1","itemList":[{"id":4,"name":"图片","description":"image","code":{"htmlTag":"img","wxmlTag":"image","attrs":{"mode":"widthFix","src":"https://xcx.yibangbang99.com/media/201701111406359467%20(1)_20180201142611_417.jpg","style":{"width":"240px","height":"240px"}},"child":[],"innerHTML":""},"images":"https://xcx.yibangbang99.com/media/images/1.jpg"},{"id":3,"name":"文本","description":"文本","code":{"htmlTag":"p","wxmlTag":"text","attrs":{"style":{"color":"black","padding":"19px"}},"child":[],"innerHTML":"予丰科技"},"images":"https://xcx.yibangbang99.com/media/images/text.png"}]}]},{"id":2,"text":"新组","pageItems":[]},{"id":3,"text":"新组","pageItems":[]}]
+    // commit('SETGUROP', appJ)
+    //
+    // return
     API.getData((response) => {
       let appJson = JSON.parse(response.data.appJson)
       commit('SETGUROP', appJson)

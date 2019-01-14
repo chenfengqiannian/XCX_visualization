@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import axios from 'axios'
-if (process.env.NODE_ENV === 'developmentHot')
+console.log(process.env.NODE_ENV)
+if (process.env.NODE_ENV === 'development')
 {
   axios.defaults.baseURL = 'http://127.0.0.1:8000';
 }
@@ -29,6 +30,9 @@ export const API = {
     })
   },
   getData(cb, id) {
+
+
+
     axios.get("/api/customapp/" + id + "/").then((response) => {
       cb(response)
     }).catch((err) => {
