@@ -20,6 +20,7 @@ Vue.prototype.getQueryVariable = function(variable) {
           }
           return (false);
         }
+Vue.use(require('vue-wechat-title'))
 new Vue({
   el: '#app',
   router,

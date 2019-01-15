@@ -1,5 +1,5 @@
 <template>
-  <div class="main" id="app">
+  <div v-wechat-title="$route.meta.title"  class="main" id="app">
     <div class="top">
 
       <div v-bind:class="" v-on:click="tabActive=true"
