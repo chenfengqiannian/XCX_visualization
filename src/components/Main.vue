@@ -8,7 +8,7 @@
       <div v-bind:class="" v-on:click="tabActive=false"
            style="margin-left: 62px;width: 110px;color: #5355c3;font-size: 17px">组件库
       </div>
-      <div style="line-height: 58px;height:58px;width: 100%;font-size: 21px;color: #5355c3">小程序<span
+      <div style="line-height: 58px;height:58px;width: 100%;font-size: 21px;color: #5355c3;text-align: center">小程序<span
         style="color: #f2926d">可视化</span></div>
       <div style="width: 227.954px"></div>
       <input type="button" v-on:click="sc" value="生成"
