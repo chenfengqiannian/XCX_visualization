@@ -9,7 +9,10 @@ export default new Router({
     {
       path: '/',
       name: 'Main',
-      component: Main
+      component: Main,
+       meta: {
+        title: '予丰科技——小程序可视化'
+      }
     }
   ]
 })
