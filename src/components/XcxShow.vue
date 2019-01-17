@@ -72,5 +72,8 @@
 <style scoped>
 .itemActive{
    border:1px solid aqua;
+  position: relative;
+
 }
+
 </style>

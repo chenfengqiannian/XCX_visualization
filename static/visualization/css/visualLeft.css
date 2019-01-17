@@ -97,6 +97,7 @@
   line-height: 49px;
   cursor:pointer;
 vertical-align:middle;
+  position: relative;
 }
 .group
 {
@@ -129,6 +130,14 @@ margin-left: 30px;
 
 }
 
+.pubDelete
+{
+  float: right;
+  margin-right: 10px;
+  background-image: url("../img/delete_b.png");
+  margin-top: 14px;
+}
+
 .member
 {
   font-size: 15px;
@@ -152,5 +161,11 @@ margin-left: 30px;
 {
   background-image: url("../img/page_w.png");
 }
+
+.groupActive .pubDelete,.active .pubDelete
+{
+   background-image: url("../img/delete_w.png");
+}
+
 
 

@@ -44,11 +44,11 @@ const getters = {
   ,
 
   activePage: state => {
-    let page=undefined
-   let obj = state.v_groupItems.find((val) => {
-      return val.id===state.activeGroupId
+    let page = undefined
+    let obj = state.v_groupItems.find((val) => {
+      return val.id === state.activeGroupId
     })
-    if(obj) {
+    if (obj) {
       page = obj.pageItems.find((val) => {
         return val.id === state.activePageId
       })
@@ -60,33 +60,71 @@ const getters = {
 // actions
 const actions = {
   getCode({commit}) {
-//     let code=[
-//     {
-//         "id": 3,
-//         "name": "文本",
-//         "description": "文本",
-//         "code": "{\"htmlTag\": \"p\",\"wxmlTag\": \"text\",\"attrs\": {\"style\": {\"color\":\"black\",\"padding\":\"19px\"}},\"child\": [],\"innerHTML\":\"予丰科技\"}\r\n",
-//         "images": "https://xcx.yibangbang99.com/media/images/text.png"
-//     },
-//     {
-//         "id": 4,
-//         "name": "图片",
-//         "description": "image",
-//         "code": "{\"htmlTag\": \"img\",\"wxmlTag\": \"image\",\"attrs\": {\"mode\":\"widthFix\",\"src\":\"https://xcx.yibangbang99.com/media/201701111406359467%20(1)_20180201142611_417.jpg\",\"style\": {\"width\":\"240px\",\"height\":\"240px\"}},\"child\": [],\"innerHTML\":\"\"}\r\n",
-//         "images": "https://xcx.yibangbang99.com/media/images/1.jpg"
-//     }
-// ]
-//     commit('CODE',code)
-//     return
+    let code = [
+      {
+        "id": 3,
+        "name": "文本",
+        "description": "文本",
+        "code": "{\"htmlTag\": \"p\",\"wxmlTag\": \"text\",\"attrs\": {\"style\": {\"color\":\"black\",\"padding\":\"19px\"}},\"child\": [],\"innerHTML\":\"予丰科技\"}\r\n",
+        "images": "https://xcx.yibangbang99.com/media/images/text.png"
+      },
+      {
+        "id": 4,
+        "name": "图片",
+        "description": "image",
+        "code": "{\"htmlTag\": \"img\",\"wxmlTag\": \"image\",\"attrs\": {\"mode\":\"widthFix\",\"src\":\"https://xcx.yibangbang99.com/media/201701111406359467%20(1)_20180201142611_417.jpg\",\"style\": {\"width\":\"240px\",\"height\":\"240px\"}},\"child\": [],\"innerHTML\":\"\"}\r\n",
+        "images": "https://xcx.yibangbang99.com/media/images/1.jpg"
+      }
+    ]
+    commit('CODE', code)
+    return
     API.visualizationcode((response) => {
       commit('CODE', response.data)
     })
   },
   getData({commit}, id) {
-    // let appJ=[{"id":1,"text":"新组","pageItems":[{"id":1,"text":"新页面","template":"custom","name":"page1","itemList":[{"id":4,"name":"图片","description":"image","code":{"htmlTag":"img","wxmlTag":"image","attrs":{"mode":"widthFix","src":"https://xcx.yibangbang99.com/media/201701111406359467%20(1)_20180201142611_417.jpg","style":{"width":"240px","height":"240px"}},"child":[],"innerHTML":""},"images":"https://xcx.yibangbang99.com/media/images/1.jpg"},{"id":3,"name":"文本","description":"文本","code":{"htmlTag":"p","wxmlTag":"text","attrs":{"style":{"color":"black","padding":"19px"}},"child":[],"innerHTML":"予丰科技"},"images":"https://xcx.yibangbang99.com/media/images/text.png"}]}]},{"id":2,"text":"新组","pageItems":[]},{"id":3,"text":"新组","pageItems":[]}]
-    // commit('SETGUROP', appJ)
-    //
-    // return
+    let appJ = [{
+      "id": 1,
+      "text": "新组",
+      "pageItems": [{
+        "id": 1,
+        "text": "新页面",
+        "template": "custom",
+        "name": "page1",
+        "itemList": [{
+          "id": 4,
+          "name": "图片",
+          "description": "image",
+          "code": {
+            "htmlTag": "img",
+            "wxmlTag": "image",
+            "attrs": {
+              "mode": "widthFix",
+              "src": "https://xcx.yibangbang99.com/media/201701111406359467%20(1)_20180201142611_417.jpg",
+              "style": {"width": "240px", "height": "240px"}
+            },
+            "child": [],
+            "innerHTML": ""
+          },
+          "images": "https://xcx.yibangbang99.com/media/images/1.jpg"
+        }, {
+          "id": 3,
+          "name": "文本",
+          "description": "文本",
+          "code": {
+            "htmlTag": "p",
+            "wxmlTag": "text",
+            "attrs": {"style": {"color": "black", "padding": "19px"}},
+            "child": [],
+            "innerHTML": "予丰科技"
+          },
+          "images": "https://xcx.yibangbang99.com/media/images/text.png"
+        }]
+      }]
+    }, {"id": 2, "text": "新组", "pageItems": []}, {"id": 3, "text": "新组", "pageItems": []}]
+    commit('SETGUROP', appJ)
+
+    return
     API.getData((response) => {
       let appJson = JSON.parse(response.data.appJson)
       commit('SETGUROP', appJson)
@@ -131,13 +169,12 @@ const mutations = {
 
 
     let obj = state.v_groupItems.find((val) => {
-      return val.id===state.activeGroupId
+      return val.id === state.activeGroupId
     })
-    let page=obj.pageItems.find((val)=>
-    {
-      return val.id===state.activePageId
+    let page = obj.pageItems.find((val) => {
+      return val.id === state.activePageId
     })
-    page.itemList=itemList
+    page.itemList = itemList
     // let array = state.pageList
     // for (let i = 0; i <= array.length - 1; i++) {
     //   if (array[i].id === state.activePageId) {
@@ -152,8 +189,7 @@ const mutations = {
   SETPAGE(state, pageList) {
     state.pageList = pageList;
   },
-  SETACTIVEGRUOPID(state, id)
-  {
+  SETACTIVEGRUOPID(state, id) {
     state.activeGroupId = id
   },
   SETACTIVEID(state, id) {
@@ -168,15 +204,43 @@ const mutations = {
     state.v_groupItems = groupList
   }
   ,
-  DELPAGE(state, id) {
-    let array = state.pageList
-    for (let i = 0; i <= array.length - 1; i++) {
-      if (array[i].id === id) {
-        array.splice(i, 1)
+  // DELPAGE(state, index) {
+  //   let array = state.pageList
+  //   for (let i = 0; i <= array.length - 1; i++) {
+  //     if (array[i].id === id) {
+  //       array.splice(i, 1)
+  //       break
+  //     }
+  //   }
+  // delete with id
+  //
+  // }
+  DELPAGE(state, index) {
+    for (let i = 0; i <= state.v_groupItems.length - 1; i++) {
+      if (state.v_groupItems[i].id === state.activeGroupId) {
+        state.v_groupItems[i].pageItems.splice(index,1)
         break
       }
     }
 
+  },
+
+  DELGROUP(state, index) {
+    state.v_groupItems.splice(index,1)
+
+
+  },
+  DELEL(state) {
+    for (let i = 0; i <= state.v_groupItems.length - 1; i++) {
+      if (state.v_groupItems[i].id === state.activeGroupId) {
+        for (let j = 0; j <= state.v_groupItems[i].pageItems.length - 1; j++) {
+          if (state.v_groupItems[i].pageItems[j].id === state.activePageId) {
+            state.v_groupItems[i].pageItems[j].itemList.splice(state.activeIndex,1)
+            break
+          }
+        }
+      }
+    }
   }
 
 

@@ -27,6 +27,7 @@ border-top-right-radius:6px;overflow-y: hidden">
                        v-on:click="chooseIndex=index">
                     <div class="leftImg groupImg"></div>
                     {{group.text}}
+                    <span class="leftImg pubDelete" v-on:click="deleteGroupOrPage(0,index)"></span>
                   </div>
                   <template v-if="index===chooseIndex">
                     <ul v-for="(page,index2) in group.pageItems" v-if="page.id > -1">
@@ -34,6 +35,7 @@ border-top-right-radius:6px;overflow-y: hidden">
                           @click.stop="mberClick(page.id)">
                         <div class="leftImg memberImg"></div>
                         {{page.text}}
+                        <span class="leftImg pubDelete" v-on:click="deleteGroupOrPage(1,index2)"></span>
                       </li>
                     </ul>
                   </template>
@@ -85,99 +87,6 @@ border-top-right-radius:6px;overflow-y: hidden">
                    style="display: inline-block;vertical-align: top;width: 100%"></XcxEditor>
       </div>
     </div>
-
-
-    <div class="left fl" style="display:none;">
-
-
-      <div class="leftContent">
-        <div class="panel" style="text-align: left">
-          <div v-if="tabActive">
-            <ul v-for="(group,index) in groupItems" v-if="group.id > -1" v-on:click="chooseGroup(group.id)">
-              <li>
-                <div class="group pub" v-on:click="chooseIndex=index">{{group.text}}<span
-                  style="float: right;margin-right: 10px">添加</span></div>
-                <template v-if="index===chooseIndex">
-                  <ul v-for="(page,index2) in group.pageItems" v-if="page.id > -1">
-                    <li class="member pub" v-bind:class="{ active: cactivePageId===page.id }"
-                        @click="mberClick(page.id)">{{page.text}}
-                    </li>
-                  </ul>
-                </template>
-              </li>
-            </ul>
-          </div>
-          <div v-else>
-            <div class="base">
-              <!--   base  -->
-              <draggable v-model="panelItems" :options="panelOption" class="panelFather">
-                <div v-for="item in panelItems" class="panelbox">
-                  <img v-bind:src="item.images" class="panel-img"/>
-                  <div class="panelbox-text">{{item.name}}</div>
-                </div>
-              </draggable>
-            </div>
-
-            <div class="leftHeader">
-              <ul>
-                <li style="padding-left: 53px;">布局</li>
-                <li style="padding-left: 53px;">高级</li>
-                <li style="padding-left: 53px;">其他</li>
-              </ul>
-            </div>
-
-            <div class="layout">
-              <!--   layout   -->
-              <table width="295px">
-
-              </table>
-            </div>
-          </div>
-        </div>
-
-        <div class="new" v-if="tabActive">
-          <input type="button" value="添加页面" class="newButton" v-on:click="createPage"/>
-          <input type="button" value="添加分组" class="newButton" v-on:click="createGroup"/>
-        </div>
-      </div>
-    </div>
-
-
-    <div class="right fr" style="display: none">
-      <div class="rightHeader">
-        <div class="leftArea fl">
-          <ul>
-            <li><a class="icon" style="display: none">风格</a></li>
-            <li><a class="icon" style="display: none">管理</a></li>
-            <li><a href="" class="icon" style="display: none">帮助</a></li>
-            <li><a href="" class="icon" style="display: none">客服</a></li>
-            <li><a href="" class="icon" style="display: none">历史</a></li>
-          </ul>
-        </div>
-        <div class="rightArea fr">
-          <input type="button" value="预览" class="pre psButton" style="display: none" v-on:click=""/>
-          <input type="button" value="保存" class="pre psButton" style="display: none" v-on:click=""/>
-          <input type="button" value="生成" class="pre pdButton" style="display: none" v-on:click="sc"/>
-        </div>
-      </div>
-      <div class="rightContent">
-
-        <!--320x520-->
-        <draggable class="view" v-model="viewItems" :options="viewOption">
-          <XcxShow v-for="(item, index) in viewItems"
-                   v-bind:viewitem="item.code"
-                   v-bind:index="index"
-                   v-bind:key="index"
-
-
-          ></XcxShow>
-        </draggable>
-
-        <XcxEditor v-bind:avtiveitem="avtiveItem" class="changeItemView"
-                   style="display: inline-block;vertical-align: top;"></XcxEditor>
-      </div>
-    </div>
-
   </div>
 
 </template>
@@ -249,7 +158,7 @@ border-top-right-radius:6px;overflow-y: hidden">
       {
 
         ...mapMutations([
-          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'SETACTIVEID', 'SETGUROP', 'SETACTIVEGRUOPID'
+          'CODE', 'SETITEM', 'ADDPAGE', 'DELPAGE', 'DELGROUP','SETACTIVEID', 'SETGUROP', 'SETACTIVEGRUOPID'
         ]),
         ...mapActions([
           'getCode',
@@ -257,6 +166,18 @@ border-top-right-radius:6px;overflow-y: hidden">
           'getData'
         ]),
 
+        deleteGroupOrPage(type,index)
+        { console.log(type)
+          console.log(index)
+          if(type===0)
+          {this.DELGROUP(index)
+
+          }
+          if(type===1)
+          {
+            this.DELPAGE(index)
+          }
+        },
         sc() {
           let id = this.getQueryVariable("id")
           window.location.href = window.location.origin + "/setting/?c_id=" + id
