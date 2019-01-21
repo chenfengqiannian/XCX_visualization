@@ -145,10 +145,8 @@ const actions = {
     }
 
     let id = getQueryVariable("id")
-    console.log(id)
     if (state.v_groupItems && id) {
       API.pushData((response) => {
-        console.log(response)
       }, id, state.v_groupItems)
     }
   }
